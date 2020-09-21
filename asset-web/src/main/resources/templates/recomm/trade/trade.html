@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('模拟交易')" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body>
+    <div class="main-content">
+        <form id="form-detail-trade" class="form-horizontal">
+            <h4 class="form-header h4">交易参数</h4>
+           	<div class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">交易类型：</label>
+                        <div class="col-sm-8">
+                            <select id="bizFlag" name="bizFlag" class="form-control m-b" onchange="setTrade()">
+			                    <option value="pur">购买</option>
+			                    <option value="redeem">赎回</option>
+			                    <option value="redeem">调仓</option>
+			                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">资金卡号：</label>
+                        <div class="col-sm-8">
+                            <input id="financeAcc" name="financeAcc" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+           		<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">组合编号：</label>
+                        <div class="col-sm-8">
+                            <select id="recommId" name="recommId" class="form-control m-b">
+			                    <option value="1">智投组合1</option>
+			                    <option value="2">智投组合2</option>
+			                    <option value="3">智投组合3</option>
+			                    <option value="4">智投组合4</option>
+			                    <option value="5">智投组合5</option>
+			                    <option value="6">智投组合6</option>
+			                    <option value="7">智投组合7</option>
+			                    <option value="8">智投组合8</option>
+			                    <option value="9">智投组合9</option>
+			                    <option value="10">智投组合10</option>
+			                    <option value="11">智投组合11</option>
+			                    <option value="12">智投组合12</option>
+			                    <option value="13">智投组合13</option>
+			                    <option value="14">智投组合14</option>
+			                    <option value="15">智投组合15</option>
+			                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="form-header h4">交易数据</h4>
+            <div class="row">
+                <div id="div_roboPurchaseAmt" class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">购买金额：</label>
+                        <div class="col-sm-8">
+                            <input id="roboPurchaseAmt" name="roboPurchaseAmt" placeholder="请输入购买金额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="div_detailId" class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">组合代码：</label>
+                        <div class="col-sm-8">
+                            <input id="detailId" value="2020011511" name="detailId" placeholder="请输入组合代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="div_validVol" class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">赎回份额：</label>
+                        <div class="col-sm-8">
+                            <input id="roboValidVol" name="roboValidVol" placeholder="请输入赎回份额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                <div id="div_fundRate" class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">赎回比例(%)：</label>
+                        <div class="col-sm-8">
+                            <input id="fundRate" name="fundRate" placeholder="请输入赎回比例" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                
+            	<div class="col-sm-4"> 
+            		<button type="button" class="btn btn-sm btn-primary" onclick="$.table.search()"><i class="fa fa-check"></i>模拟交易</button>&nbsp;
+            	</div>
+            </div>
+            <h4 class="form-header h4">交易结果</h4>
+            <div class="row">
+				<div class="col-sm-12 select-table table-bordered">
+					<table id="bootstrap-table"></table>
+				</div>
+			</div>
+        </form>
+    </div>
+      
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: select2-js" />
+	<script>
+	    var prefix = ctx + "recomm/trade";
+        var prefixs = ctx + "demo/table";
+	
+        function submitHandler() {
+        	//var data = $("#form-detail-trade").serializeArray();
+        	//data.push({"name": "status", "value": status});
+        	//$.operate.postData(prefix + "/trade", data);
+        	alert(0);
+        	query();
+        	alert(1);
+	    }
+		
+        function setTrade(){
+        	var bizFlag = $("#bizFlag").val();
+        	if(bizFlag == "pur"){
+        		$("#div_roboPurchaseAmt").attr("style","display:block");
+        		$("#div_detailId").attr("style","display:block");
+        		$("#div_validVol").attr("style","display:none");
+        		$("#div_fundRate").attr("style","display:none");
+        	}
+			if(bizFlag == "redeem"){
+        		$("#div_roboPurchaseAmt").attr("style","display:none");
+        		$("#div_detailId").attr("style","display:none");
+        		$("#div_validVol").attr("style","display:block");
+        		$("#div_fundRate").attr("style","display:block");
+        	}
+        }
+        
+        $(function(){
+        	setTrade();
+        	query();
+        });
+        
+        function query(){
+        	var options = {
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		        columns : [{
+           					field : 'bizFlag',
+           					title : '交易类型'
+           				}, {
+           					field : 'appAmt',
+           					title : '申请金额'
+           				}, {
+           					field : 'appVol',
+           					title : '申请份额'
+           				}, {
+           					field : 'fundNav',
+           					title : '净值'
+           				}, {
+           					field : 'fundRate',
+           					title : '占比'
+           				}, {
+           					field : 'fundRateBak',
+           					title : '原占比'
+           				}
+           		]
+             };
+             $.table.init(options);
+        }
+    </script>
+</body>
+</html>

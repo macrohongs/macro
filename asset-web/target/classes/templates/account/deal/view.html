@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('嘉兴账务处理')" />
+</head>
+<body class="gray-bg">
+   <form id="form-account-deal" class="form-horizontal">
+    <div class="wrapper wrapper-content animated fadeIn">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>数据库配置 </h5>
+                    </div>
+                    <div class="ibox-content">
+			    		<input id="fieldStep" name="fieldStep" type="hidden"/>
+			    		<div class="row">
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">IP地址：</label>
+			                        <div class="col-sm-8">
+			                            <input id="ip" name="ip" value="[[${ip}]]" placeholder="请输入IP地址" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">用户名：</label>
+			                        <div class="col-sm-8">
+			                            <input id="username" name="username" placeholder="请输入用户名" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">密码：</label>
+			                        <div class="col-sm-8">
+			                            <input id="password" name="password" placeholder="请输入密码" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+                   		</div>
+			    		<div class="row">
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">服务名/SID：</label>
+			                        <div class="col-sm-8">
+			                            <input id="sid" name="sid" placeholder="请输入服务名/SID" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">当前营业日：</label>
+			                        <div class="col-sm-8">
+			                            <input id="workDate" name="workDate" placeholder="请输入当前营业日" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+                   		</div>
+               		</div>
+	                <div class="panel">
+	                    <div class="panel-heading">
+	                        <div class="panel-options">
+	
+	                            <ul class="nav nav-tabs">
+	                                <li class="active"><a data-toggle="tab" href="tabs_panels.html#tab-4">日初</a>
+	                                </li>
+	                                <li class=""><a data-toggle="tab" href="tabs_panels.html#tab-5">日结</a>
+	                                </li>
+	                                <li class=""><a data-toggle="tab" href="tabs_panels.html#tab-6">账务处理</a>
+	                                </li>
+	                                <li class=""><a data-toggle="tab" href="tabs_panels.html#tab-7">划付款</a>
+	                                </li>
+	                            </ul>
+	                        </div>
+	                    </div>
+				        <div class="panel-body">
+	                        <div class="tab-content">
+	                            <div id="tab-4" class="tab-pane active">
+				                    <button id="button1" class="btn btn-outline btn-primary dim" type="button" onclick="submitHandler('1');">日初<i id="i_check_1"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button2" class="btn btn-outline btn-success dim" type="button" onclick="submitHandler('2');">基金净值更新<i id="i_check_2"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button3" class="btn btn-outline btn-info dim" type="button" onclick="submitHandler('3');">定期定额扣款确认<i id="i_check_3"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button4" class="btn btn-outline btn-warning dim" type="button" onclick="submitHandler('4');">汇划无效款与手续费<i id="i_check_4"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button2" class="btn btn-outline btn-success dim" type="button" onclick="submitHandler('5');">划付基金公司登记簿<i id="i_check_5"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button5" class="btn btn-outline btn-danger dim" type="button" onclick="submitHandler('6');">收益计算<i id="i_check_6"></i></button>
+	                            </div>
+	
+	                            <div id="tab-5" class="tab-pane">
+				                    <button id="button6" class="btn btn-outline btn-primary dim" type="button" onclick="submitHandler('7');">日结<i id="i_check_7"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button8" class="btn btn-outline btn-danger dim" type="button" onclick="submitHandler('8');">总部扎帐<i id="i_check_8"></i></button>
+	                            </div>
+	                            <div id="tab-6" class="tab-pane">
+				                    <button id="button9" class="btn btn-outline btn-primary dim" type="button" onclick="submitHandler('9');">启动账务处理<i id="i_check_9"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button10" class="btn btn-outline btn-success  dim" type="button" onclick="submitHandler('10');">导入T-1日交易确认数据<i id="i_check_10"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button11" class="btn btn-outline btn-info  dim" type="button" onclick="submitHandler('11');">账户业务数据处理<i id="i_check_11"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button12" class="btn btn-outline btn-warning dim" type="button" onclick="submitHandler('12');">交易业务数据处理<i id="i_check_12"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button13" class="btn btn-outline btn-danger dim" type="button" onclick="submitHandler('13');">T日申请数据准备<i id="i_check_13"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button14" class="btn btn-outline btn-info  dim" type="button" onclick="submitHandler('14');">导出T日申请数据<i id="i_check_14"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button15" class="btn btn-outline btn-warning dim" type="button" onclick="submitHandler('15');">定投申购扣款数据准备<i id="i_check_15"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button16" class="btn btn-outline btn-danger dim" type="button" onclick="submitHandler('16');">定投申购扣款数据导出<i id="i_check_16"></i></button>
+	                            </div>
+	                            <div id="tab-7" class="tab-pane">
+				                    <button id="button18" class="btn btn-outline btn-primary dim" type="button" onclick="submitHandler('17');">划付投资人无效认申购退款<i id="i_check_17"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button19" class="btn btn-outline btn-warning dim" type="button" onclick="submitHandler('18');">划付投资人赎回、分红、认购退款<i id="i_check_18"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button20" class="btn btn-outline btn-danger dim" type="button" onclick="submitHandler('19');">划付投资人回退款确认<i id="i_check_19"></i></button>
+				                    <button class="btn btn-info  dim" type="button"><i class="glyphicon glyphicon-menu-right"></i></button>
+				                    <button id="button17" class="btn btn-outline btn-success  dim" type="button" onclick="submitHandler('20');">T日日切<i id="i_check_20"></i></button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+			                
+            </div>
+        </div>
+     </div>
+   </form>
+<th:block th:include="include :: footer" />
+<script>
+
+		var prefix = ctx + "account/deal";
+        
+		function submitHandler(step) {
+			var step_bak = $('#fieldStep').val();
+			alert(parseInt(step_bak) + "-" + parseInt(step));
+			if(parseInt(step_bak) >= parseInt(step)){
+                $.modal.alertWarning("该步骤已执行，请重新选择");
+				return;
+			}
+        	alert('step:' + step);
+		    $('#fieldStep').val(step);
+        	var data = $("#form-account-deal").serializeArray();
+        	alert('data:' + data);
+        	$.operate.postData(prefix + "/trade", data);
+	    }
+		
+
+		$(function() {
+			var steps = [[${fieldStep}]];
+			var ips = '[[${ip}]]';
+			var sids = '[[${sid}]]';
+			var usernames = '[[${username}]]';
+			var passwords = '[[${password}]]';
+			var workDates = '[[${workDate}]]';
+		    $('#fieldStep').val(steps);
+		    $('#ip').val(ips);
+		    $('#sid').val(sids);
+		    $('#username').val(usernames);
+		    $('#password').val(passwords);
+		    $('#workDate').val(workDates);
+		    for(var i = 1;i <= steps; i++){
+	        	var div = document.getElementById('i_check_' + i);
+	            div.setAttribute("class", "fa fa-check");
+		    }
+		});
+        
+    </script>
+</body>
+</html>

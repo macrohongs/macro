@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.glf.recomm.mapper.RecommFundMapper">
+
+	<resultMap type="RecommFund" id="RecommFundResult">
+		<id     property="recommId"        column="recomm_id"       />
+		<result property="recommName"      column="recomm_name"     />
+		<result property="risk"      column="risk"     />
+		<result property="createBy"      column="create_user"     />
+		<result property="createTime"    column="create_date"   />
+	</resultMap>
+	
+	<resultMap type="RecommDetail" id="RecommDetailResult">
+		<id     property="recommId"        column="recomm_id"       />
+		<result property="detailId"      column="detail_id"     />
+		<result property="fundCode"      column="fund_code"     />
+		<result property="fundRate"    column="fund_rate"   />
+	</resultMap>
+	
+	<sql id="selectRecommVo">
+        select recomm_id, recomm_name, risk, create_date, create_user
+		from recomm_fund
+    </sql>
+	
+	<select id="selectList" parameterType="RecommFund" resultMap="RecommFundResult">
+	    <include refid="selectRecommVo"/>
+		<where>
+			<if test="recommName != null and recommName != ''">
+				AND recomm_name like concat('%', #{recommName}, '%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectDetailList" parameterType="RecommDetail" resultMap="RecommDetailResult">
+	    select detail_id,fund_code,fund_rate from recommon_detail
+	    where detail_id = #{detailId}
+	</select>
+	
+	<select id="selectDetailId" parameterType="Long" resultType="String">
+	    SELECT cast(max(detail_id+0) as char) FROM (
+   			 SELECT substring(detail_id, 1, 8) detail_id FROM RECOMMON_DETAIL ) tb 
+	</select>
+	
+	<select id="selectRecommFund" parameterType="Long" resultMap="RecommFundResult">
+		<include refid="selectRecommVo"/>
+		where recomm_id = #{recommId}
+	</select>
+	
+ 	<update id="updateRecommFund" parameterType="RecommFund">
+ 		update recomm_fund
+ 		<set>
+ 			<if test="recommName != null and recommName != ''">recomm_name = #{recommName},</if>
+ 			<if test="risk != null and risk != ''">risk = #{risk},</if>
+ 			<if test="updateBy != null and updateBy != ''">create_user = #{updateBy},</if>
+ 			create_date = sysdate()
+ 		</set>
+ 		where recomm_id = #{recommId}
+	</update>
+
+</mapper> 

@@ -1,0 +1,18 @@
+{
+  "groups": [
+    {
+      "name": "spring.datasource.druid.master",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.glf.framework.config.DruidConfig",
+      "sourceMethod": "public javax.sql.DataSource masterDataSource(com.glf.framework.config.properties.DruidProperties) "
+    },
+    {
+      "name": "spring.datasource.druid.slave",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.glf.framework.config.DruidConfig",
+      "sourceMethod": "public javax.sql.DataSource slaveDataSource(com.glf.framework.config.properties.DruidProperties) "
+    }
+  ],
+  "properties": [],
+  "hints": []
+}

@@ -1,0 +1,3368 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('模拟交易')" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body>
+    <div class="main-content">
+        <form id="form-detail-trade" class="form-horizontal">
+           	<div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">IP地址：</label>
+                        <div class="col-sm-8">
+                            <input id="ip" name="ip" value="127.0.0.1" placeholder="请输入IP地址" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">端口号：</label>
+                        <div class="col-sm-8">
+                            <input id="port" name="port" value="8901" placeholder="请输入端口号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">接口编号：</label>
+                        <div class="col-sm-8">
+	                        <input id="fieldCnt" name="fieldCnt" value="1" type="hidden" />
+		            		<input id="fieldStart" name="fieldStart" value="1" type="hidden" />
+		            		<input id="fieldEnd" name="fieldEnd" value="1" type="hidden" />
+                            <select id="interfaceFlag" name="interfaceFlag" class="form-control m-b" onchange="setTrade()">
+			                    <option value="">--请选择--</option>
+			                    <option value="778390">778390 基金交易帐户查询验证</option>
+			                    <option value="778391">778391 基金交易帐户开户申请</option>
+			                    <option value="778393">778393 基金交易帐户资料修改申请</option>
+			                    <option value="778396">778396 基金交易帐户资料查询</option>
+			                    <option value="778398">778398 风险承受度调查</option>
+			                    <option value="778400">778400 风控调查是否过期</option>
+			                    <option value="778401">778401 投资人资金卡变更</option>
+			                    <option value="778402">778402 投资人风险预评</option>
+			                    <option value="778319">778319 客户声明书判定</option>
+			                    <option value="778320">778320 认购申请</option>
+			                    <option value="778322">778322 申购申请</option>
+			                    <option value="778324">778324 赎回申请</option>
+			                    <option value="778329">778329 设置分红方式申请</option>
+			                    <option value="778336">778336 转换申请</option>
+			                    <option value="778359">778359 定投开通申请</option>
+			                    <option value="778360">778360 定投停止申请</option>
+			                    <option value="778361">778361 定投修改申请</option>
+			                    <option value="778399">778399 交易撤单申请</option>
+			                    <option value="778371">778371 查询基金公司</option>
+			                    <option value="778372">778372 查询基金产品</option>
+			                    <option value="778373">778373 查询可转换基金</option>
+			                    <option value="778381">778381 查询投资人基金持仓</option>
+			                    <option value="778382">778382 查询投资人定投计划</option>
+			                    <option value="778383">778383 查询投资人当日交易</option>
+			                    <option value="778384">778384 查询投资人未确认交易</option>
+			                    <option value="778385">778385 查询投资人历史确认交易</option>
+			                    <option value="778387">778387 查询基金产品费率</option>
+			                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">线程数：</label>
+                        <div class="col-sm-8">
+                            <input id="thread" name="thread" value="1" placeholder="请输入进程数" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+           		<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">任务数：</label>
+                        <div class="col-sm-8">
+                            <input id="task" name="task" value="1" placeholder="请输入并发数" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+           		<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">线程间隔：</label>
+                        <div class="col-sm-8">
+                            <input id="threadInterval" name="threadInterval" value="0" placeholder="请输入线程间隔" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+           		<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">页码：</label>
+                        <div class="col-sm-8">
+                            <input id="startRows" name="startRows" value="1" placeholder="请输入起始条数" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+           		<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">每页条数：</label>
+                        <div class="col-sm-8">
+                            <input id="pageRows" name="pageRows" value="10" placeholder="请输入每页条数" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4"> 
+            		<button type="button" class="btn btn-sm btn-primary" onclick="query()"><i class="fa fa-check"></i>模拟交易</button>&nbsp;
+            	</div>
+            </div>
+            <h4 class="form-header h4">申请字段</h4>
+            
+            <!-- 778390--start 1-4-->
+            <div id="div_778390" style="display:none" class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                            <input id="field1" name="field1" value="张佳燕" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                            <select id="field2" name="field2" class="form-control m-b" >
+			                    <option value="1">柜面</option>
+			                    <option value="2">电话</option>
+			                    <option value="3">网银</option>
+			                    <option value="4">手机短信</option>
+			                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">证件类型：</label>
+                        <div class="col-sm-8">
+                            <select id="field3" name="field3" class="form-control m-b" >
+			                    <option value="0">身份证</option>
+			                    <option value="1">护照</option>
+			                    <option value="2">军官证</option>
+			                    <option value="3">士兵证</option>
+			                    <option value="4">回乡证</option>
+			                    <option value="5">户口本</option>
+			                    <option value="6">外国护照</option>
+			                    <option value="7">其它</option>
+			                    <option value="8">文职证</option>
+			                    <option value="9">警官证</option>
+			                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">证件号码：</label>
+                        <div class="col-sm-8">
+                            <input id="field4" name="field4" value="330411199102133225" placeholder="请输入证件号码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 778390--end -->
+            
+            <!-- 778391--start 5-32-->
+            <div id="div_778391" style="display:none" class="row">
+           		<div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">交易机构号：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field5" name="field5" placeholder="请输入交易机构号" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">资金卡号：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field6" name="field6" placeholder="请输入资金卡号" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">客户名称：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field7" name="field7" placeholder="请输入客户名称" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">交易手段：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field8" name="field8" class="form-control m-b" >
+				                    <option value="1">柜面</option>
+				                    <option value="2">电话</option>
+				                    <option value="3">网银</option>
+				                    <option value="4">手机短信</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">证件类型：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field9" name="field9" class="form-control m-b" >
+				                    <option value="0">身份证</option>
+				                    <option value="1">护照</option>
+				                    <option value="2">军官证</option>
+				                    <option value="3">士兵证</option>
+				                    <option value="4">回乡证</option>
+				                    <option value="5">户口本</option>
+				                    <option value="6">外国护照</option>
+				                    <option value="7">其它</option>
+				                    <option value="8">文职证</option>
+				                    <option value="9">警官证</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">证件号码：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field10" name="field10" placeholder="请输入证件号码" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">证件有效日期：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field11" name="field11" placeholder="请输入证件有效日期" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">出生日：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field12" name="field12" placeholder="请输入出生日" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">性别：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field13" name="field13" class="form-control m-b" >
+				                    <option value="0">女</option>
+				                    <option value="1">男</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">婚姻状况：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field14" name="field14" class="form-control m-b" >
+				                    <option value="1">已婚</option>
+				                    <option value="2">未婚</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">最高学历：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field15" name="field15" class="form-control m-b" >
+				                    <option value="0">N/A</option>
+				                    <option value="1">初中及以下</option>
+				                    <option value="2">高中/中专</option>
+				                    <option value="3">专科/本科</option>
+				                    <option value="4">硕士</option>
+				                    <option value="5">博士及以上</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">职业类型：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field16" name="field16" placeholder="请输入职业类型" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">户籍地址（住址）：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field17" name="field17" placeholder="请输入户籍地址（住址）" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">户籍地址邮编：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field18" name="field18" placeholder="请输入户籍地址邮编" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">通讯地址：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field19" name="field19" placeholder="请输入通讯地址" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">通讯地址邮编：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field20" name="field20" placeholder="请输入通讯地址邮编" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">通讯电话：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field21" name="field21" placeholder="请输入通讯电话" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">手机：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field22" name="field22" placeholder="请输入手机" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">电子邮件：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field23" name="field23" placeholder="请输入电子邮件" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">对帐单寄送方式：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field24" name="field24" class="form-control m-b" >
+				                    <option value="0">不寄送</option>
+				                    <option value="1">邮寄</option>
+				                    <option value="2">传真</option>
+				                    <option value="3">E-mail</option>
+				                    <option value="4">短消息</option>
+				                    <option value="5">亲领</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">报告寄送地址类型：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field25" name="field25" class="form-control m-b" >
+				                    <option value="0">无</option>
+				                    <option value="1">户籍地址（住址）</option>
+				                    <option value="2">通讯地址</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">推荐人工号：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field26" name="field26" placeholder="请输入推荐人工号" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">推荐人名称：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field27" name="field27" placeholder="请输入推荐人名称" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">工作单位：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field28" name="field28" placeholder="请输入工作单位" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">工作单位电话：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field29" name="field29" placeholder="请输入工作单位电话" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">工作部门：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field30" name="field30" placeholder="请输入工作部门" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">风险评估得分：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field31" name="field31" placeholder="请输入风险评估得分" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">开通短信：</label>
+	                        <div class="col-sm-8">
+	                            <select id="field32" name="field32" class="form-control m-b" >
+				                    <option value="1">开通</option>
+				                    <option value="0">不开通</option>
+				                </select>
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+            </div>
+			<!-- 778391--end -->
+			
+			<!-- 778393--start 33-52 -->
+            <div id="div_778393" style="display:none" class="row">
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">交易机构号：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field33" name="field33" placeholder="请输入交易机构号" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">资金卡号：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field34" name="field34" placeholder="请输入资金卡号" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">客户名称：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field35" name="field35" placeholder="请输入客户名称" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">交易手段：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field36" name="field36" placeholder="请输入交易手段" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">证件有效日期：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field37" name="field37" placeholder="请输入证件有效日期" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">婚姻状况：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field38" name="field38" placeholder="请输入婚姻状况" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">最高学历：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field39" name="field39" placeholder="请输入最高学历" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">职业类型：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field40" name="field40" placeholder="请输入职业类型" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">户籍地址：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field41" name="field41" placeholder="请输入户籍地址" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">户籍地址邮编：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field42" name="field42" placeholder="请输入户籍地址邮编" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">通讯地址：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field43" name="field43" placeholder="请输入通讯地址" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">通讯地址邮编：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field44" name="field44" placeholder="请输入通讯地址邮编" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">通讯电话：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field45" name="field45" placeholder="请输入通讯电话" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">手机：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field46" name="field46" placeholder="请输入手机" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">电子邮件：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field47" name="field47" placeholder="请输入电子邮件" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">对帐单寄送方式：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field48" name="field48" placeholder="请输入对帐单寄送方式" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+           	    <div class="row">
+	            	<div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">报告寄送地址类型：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field49" name="field49" placeholder="请输入报告寄送地址类型" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">工作单位：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field50" name="field50" placeholder="请输入工作单位" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">工作单位电话：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field51" name="field51" placeholder="请输入工作单位电话" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-sm-3">
+	                    <div class="form-group">
+	                        <label class="col-sm-4 control-label">工作部门：</label>
+	                        <div class="col-sm-8">
+	                        	<input id="field52" name="field52" placeholder="请输入工作部门" class="form-control" type="text" >
+	                        </div>
+	                    </div>
+	                </div>
+                </div>
+            </div>
+			<!-- 778393--end -->
+			
+			<!-- 778396--start 53-56 -->
+            <div id="div_778396" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field53" name="field53" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field54" name="field54" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field55" name="field55" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field56" name="field56" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778396--end -->
+			
+			<!-- 778398--start 57-61 -->
+            <div id="div_778398" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field57" name="field57" value="9999" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field58" name="field58" value="6221321103036471" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field59" name="field59" value="张佳燕" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field60" name="field60" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">风险评估得分：</label>
+                        <div class="col-sm-8">
+                        	<input id="field61" name="field61" value="80" placeholder="请输入风险评估得分" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+			<!-- 778398--end -->
+			
+			<!-- 778400--start 62-65 -->
+            <div id="div_778400" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field62" name="field62" value="9999" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field63" name="field63" value="6221321103036471" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field64" name="field64" value="张佳燕" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field65" name="field65" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778400--end -->
+			
+			<!-- 778401--start 66-70 -->
+            <div id="div_778401" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field66" name="field66" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field67" name="field67" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户原资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field68" name="field68" placeholder="请输入客户原资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field69" name="field69" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field70" name="field70" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+			<!-- 778401--end -->
+			
+			<!-- 778402--start 71-75 -->
+            <div id="div_778402" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field71" name="field71" value="778402" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field72" name="field72" value="6221321103036471" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field73" name="field73" value="张佳燕" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field74" name="field74" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">风险评估得分：</label>
+                        <div class="col-sm-8">
+                        	<input id="field75" name="field75" value="80" placeholder="请输入风险评估得分" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+			<!-- 778402--end -->
+			
+			<!-- 778319--start 76-80 -->
+            <div id="div_778319" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field76" name="field76" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field77" name="field77" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field78" name="field78" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field79" name="field79" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field80" name="field80" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+			<!-- 778319--end -->
+			
+			<!-- 778320--start 81-90 -->
+            <div id="div_778320" style="display:none" class="row">
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field81" name="field81" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field82" name="field82" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field83" name="field83" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field84" name="field84" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field85" name="field85" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">结算币种：</label>
+                        <div class="col-sm-8">
+                        	<input id="field86" name="field86" placeholder="请输入结算币种" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请金额：</label>
+                        <div class="col-sm-8">
+                        	<input id="field87" name="field87" placeholder="请输入申请金额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡密码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field88" name="field88" placeholder="请输入资金卡密码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人工号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field89" name="field89" placeholder="请输入推荐人工号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field90" name="field90" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+			<!-- 778320--end -->
+			
+			<!-- 778322--start 91-100 -->
+            <div id="div_778322" style="display:none" class="row">
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field91" name="field91" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field92" name="field92" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field93" name="field93" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field94" name="field94" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field95" name="field95" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">结算币种：</label>
+                        <div class="col-sm-8">
+                        	<input id="field96" name="field96" placeholder="请输入结算币种" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请金额：</label>
+                        <div class="col-sm-8">
+                        	<input id="field97" name="field97" placeholder="请输入申请金额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡密码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field98" name="field98" placeholder="请输入资金卡密码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人工号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field99" name="field99" placeholder="请输入推荐人工号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field100" name="field100" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+			<!-- 778322--end -->
+			
+			<!-- 778324--start 101-108 -->
+            <div id="div_778324" style="display:none" class="row">
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field101" name="field101" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field102" name="field102" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field103" name="field103" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field104" name="field104" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field105" name="field105" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field106" name="field106" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field107" name="field107" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field108" name="field108" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778324--end -->
+			
+			<!-- 778329--start 109-114 -->
+            <div id="div_778329" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field109" name="field109" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field110" name="field110" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field111" name="field111" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field112" name="field112" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field113" name="field113" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">分红方式：</label>
+                        <div class="col-sm-8">
+                        	<input id="field114" name="field114" placeholder="请输入分红方式" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778329--end -->
+			
+			<!-- 778336--start 115-122 -->
+            <div id="div_778336" style="display:none" class="row">
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field115" name="field115" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field116" name="field116" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field117" name="field117" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field118" name="field118" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field119" name="field119" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">目标基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field120" name="field120" placeholder="请输入目标基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">结算币种：</label>
+                        <div class="col-sm-8">
+                        	<input id="field121" name="field121" placeholder="请输入结算币种" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请份数：</label>
+                        <div class="col-sm-8">
+                        	<input id="field122" name="field122" placeholder="请输入申请份数" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778336--end -->
+			
+			<!-- 778359--start 123-135 -->
+            <div id="div_778359" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field123" name="field123" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field124" name="field124" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field125" name="field125" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field126" name="field126" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field127" name="field127" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">结算币种：</label>
+                        <div class="col-sm-8">
+                        	<input id="field128" name="field128" placeholder="请输入结算币种" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请金额：</label>
+                        <div class="col-sm-8">
+                        	<input id="field129" name="field129" placeholder="请输入申请金额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投开始日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field130" name="field130" placeholder="请输入定投开始日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投停止日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field131" name="field131" placeholder="请输入定投停止日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投每月发送日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field132" name="field132" placeholder="请输入定投每月发送日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投期数：</label>
+                        <div class="col-sm-8">
+                        	<input id="field133" name="field133" placeholder="请输入定投期数" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人工号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field134" name="field134" placeholder="请输入推荐人工号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">推荐人名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field135" name="field135" placeholder="请输入推荐人名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778359--end -->
+			
+			<!-- 778360--start 136-144 -->
+            <div id="div_778360" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field136" name="field136" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field137" name="field137" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field138" name="field138" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field139" name="field139" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field140" name="field140" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">结算币种：</label>
+                        <div class="col-sm-8">
+                        	<input id="field141" name="field141" placeholder="请输入结算币种" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请金额：</label>
+                        <div class="col-sm-8">
+                        	<input id="field142" name="field142" placeholder="请输入申请金额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投计划编号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field143" name="field143" placeholder="请输入定投计划编号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投每月发送日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field144" name="field144" placeholder="请输入定投每月发送日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778360--end -->
+			
+			<!-- 778361--start 145-159  -->
+            <div id="div_778361" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field145" name="field145" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field146" name="field146" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field147" name="field147" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field148" name="field148" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field149" name="field149" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">结算币种：</label>
+                        <div class="col-sm-8">
+                        	<input id="field150" name="field150" placeholder="请输入结算币种" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请金额：</label>
+                        <div class="col-sm-8">
+                        	<input id="field151" name="field151" placeholder="请输入申请金额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投计划编号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field152" name="field152" placeholder="请输入定投计划编号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投开始日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field153" name="field153" placeholder="请输入定投开始日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投停止日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field154" name="field154" placeholder="请输入定投停止日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投每月发送日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field155" name="field155" placeholder="请输入定投每月发送日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">下次申购日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field156" name="field156" placeholder="请输入下次申购日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">定投期数：</label>
+                        <div class="col-sm-8">
+                        	<input id="field157" name="field157" placeholder="请输入定投期数" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">原定投每月发送日：</label>
+                        <div class="col-sm-8">
+                        	<input id="field158" name="field158" placeholder="请输入原定投每月发送日" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">原定投每月扣款金额：</label>
+                        <div class="col-sm-8">
+                        	<input id="field159" name="field159" placeholder="请输入原定投每月扣款金额" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778361--end -->
+			
+			<!-- 778399--start 160-166 -->
+            <div id="div_778399" style="display:none" class="row">
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field160" name="field160" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field161" name="field161" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                        	<input id="field162" name="field162" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                        	<input id="field163" name="field163" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">原申请单编号：</label>
+                        <div class="col-sm-8">
+                        	<input id="field164" name="field164" placeholder="请输入原申请单编号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">原交易类型：</label>
+                        <div class="col-sm-8">
+                        	<input id="field165" name="field165" placeholder="请输入原交易类型" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡密码：</label>
+                        <div class="col-sm-8">
+                        	<input id="field166" name="field166" placeholder="请输入资金卡密码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-3">
+                    &nbsp;
+                </div>
+            </div>
+			<!-- 778399--end -->
+			
+			<!-- 778371--start -->
+            <div id="div_778371" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    &nbsp;
+                </div>
+            </div>
+			<!-- 778371--end -->
+			
+			<!-- 778372--start 167- -->
+            <div id="div_778372" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">公司代码：</label>
+                        <div class="col-sm-8">
+                            <input id="field167" name="field167" placeholder="请输入公司代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                            <input id="field168" name="field168" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金简称：</label>
+                        <div class="col-sm-8">
+                            <input id="field169" name="field169" placeholder="请输入基金简称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金类型：</label>
+                        <div class="col-sm-8">
+                            <input id="field170" name="field170" placeholder="请输入基金类型" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">查询类型：</label>
+                        <div class="col-sm-8">
+                            <select id="field171" name="field171" class="form-control m-b" >
+			                    <option value="">--请选择--</option>
+			                    <option value="1">认购</option>
+			                    <option value="2">申购</option>
+			                    <option value="3">定期定额</option>
+			                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778372--end -->
+			
+			<!-- 778373--start 195-195 -->
+            <div id="div_778373" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">转出基金代码：</label>
+                        <div class="col-sm-8">
+                            <input id="field195" name="field195" placeholder="请输入转出基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">&nbsp;</div>
+            </div>
+			<!-- 778373--end -->
+			
+			<!-- 778381--start 172-176 -->
+            <div id="div_778381" style="display:none" class="row">
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                            <input id="field172" name="field172" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                            <input id="field173" name="field173" value="6221321100007350" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                            <input id="field174" name="field174" value="沈莺" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                            <input id="field175" name="field175" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">查询类型：</label>
+                        <div class="col-sm-8">
+                            <input id="field176" name="field176" placeholder="请输入查询类型" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-4">&nbsp;</div>
+            </div>
+			<!-- 778381--end -->
+			
+			<!-- 778382--start 177-180 -->
+            <div id="div_778382" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                            <input id="field177" name="field177" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                            <input id="field178" name="field178" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                            <input id="field179" name="field179" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                            <input id="field180" name="field180" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778382--end -->
+			
+			<!-- 778383--start 181-184 -->
+            <div id="div_778383" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                            <input id="field181" name="field181" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                            <input id="field182" name="field182" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                            <input id="field183" name="field183" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                            <input id="field184" name="field184" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778383--end -->
+			
+			<!-- 778384--start 185-188 -->
+            <div id="div_778384" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                            <input id="field185" name="field185" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                            <input id="field186" name="field186" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                            <input id="field187" name="field187" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                            <input id="field188" name="field188" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778384--end -->
+			
+			<!-- 778385--start 189-192 -->
+            <div id="div_778385" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易机构号：</label>
+                        <div class="col-sm-8">
+                            <input id="field189" name="field189" placeholder="请输入交易机构号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">资金卡号：</label>
+                        <div class="col-sm-8">
+                            <input id="field190" name="field190" placeholder="请输入资金卡号" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">客户名称：</label>
+                        <div class="col-sm-8">
+                            <input id="field191" name="field191" placeholder="请输入客户名称" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">交易手段：</label>
+                        <div class="col-sm-8">
+                            <input id="field192" name="field192" placeholder="请输入交易手段" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778385--end -->
+			
+			<!-- 778387--start 193-194 -->
+            <div id="div_778387" style="display:none" class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">基金代码：</label>
+                        <div class="col-sm-8">
+                            <input id="field193" name="field193" placeholder="请输入基金代码" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">费率类型：</label>
+                        <div class="col-sm-8">
+                            <input id="field194" name="field194" placeholder="请输入费率类型" class="form-control" type="text" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- 778387--end -->
+            
+            <h4 class="form-header h4">交易结果</h4>
+            <div class="row">
+	            <div class="col-sm-12">
+	                <div class="tabs-container">
+	                    <ul class="nav nav-tabs">
+	                        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">报文头信息</a>
+	                        </li>
+	                        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">数据列表</a>
+	                        </li>
+	                        <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">请求报文</a>
+	                        </li>
+	                        <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">响应报文</a>
+	                        </li>
+	                    </ul>
+	                    <div class="tab-content">
+	                        <div id="tab-1" class="tab-pane active">
+	                            <div class="panel-body">
+                					<div id="divRemarkRow" style="display:none" class="row">
+						                <div class="col-sm-12">
+						                	<div id="divRemark"></div>
+						                </div>
+						            </div>
+	                            </div>
+	                        </div>
+	                        <div id="tab-3" class="tab-pane">
+	                            <div class="panel-body">
+                					<div class="row">
+						                <div class="col-sm-12">
+						                	<div id="divRequest"></div>
+						                </div>
+						            </div>
+	                            </div>
+	                        </div>
+	                        <div id="tab-4" class="tab-pane">
+	                            <div class="panel-body">
+                					<div class="row">
+						                <div class="col-sm-12">
+						                	<div id="divResponse"></div>
+						                </div>
+						            </div>
+	                            </div>
+	                        </div>
+	                        <div id="tab-2" class="tab-pane">
+	                            <div class="panel-body">
+	                                <div id="div_bootstrap-table778390" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778390"></table>
+									</div>
+									<div id="div_bootstrap-table778391" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778391"></table>
+									</div>
+									<div id="div_bootstrap-table778393" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778393"></table>
+									</div>
+									<div id="div_bootstrap-table778396" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778396"></table>
+									</div>
+									<div id="div_bootstrap-table778398" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778398"></table>
+									</div>
+									
+									<div id="div_bootstrap-table778400" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778400"></table>
+									</div>
+									<div id="div_bootstrap-table778401" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778401"></table>
+									</div>
+									<div id="div_bootstrap-table778402" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778402"></table>
+									</div>
+									<div id="div_bootstrap-table778319" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778319"></table>
+									</div>
+									<div id="div_bootstrap-table778320" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778320"></table>
+									</div>
+									
+									<div id="div_bootstrap-table778322" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778322"></table>
+									</div>	
+									<div id="div_bootstrap-table778324" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778324"></table>
+									</div>	
+									<div id="div_bootstrap-table778329" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778329"></table>
+									</div>	
+									<div id="div_bootstrap-table778336" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778336"></table>
+									</div>	
+									<div id="div_bootstrap-table778359" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778359"></table>
+									</div>	
+									<div id="div_bootstrap-table778360" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778360"></table>
+									</div>	
+									<div id="div_bootstrap-table778361" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778361"></table>
+									</div>	
+									<div id="div_bootstrap-table778399" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778399"></table>
+									</div>	
+									<div id="div_bootstrap-table778371" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778371"></table>
+									</div>	
+									<div id="div_bootstrap-table778372" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778372"></table>
+									</div>	
+									<div id="div_bootstrap-table778373" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778373"></table>
+									</div>	
+									<div id="div_bootstrap-table778381" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778381"></table>
+									</div>	
+									<div id="div_bootstrap-table778382" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778382"></table>
+									</div>	
+									<div id="div_bootstrap-table778383" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778383"></table>
+									</div>	
+									<div id="div_bootstrap-table778384" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778384"></table>
+									</div>	
+									<div id="div_bootstrap-table778385" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778385"></table>
+									</div>	
+									<div id="div_bootstrap-table778387" style="display:none" class="col-sm-12 select-table table-bordered">
+										<table id="bootstrap-table778387"></table>
+									</div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+            	</div>
+			</div>
+        </form>
+    </div>
+      
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: select2-js" />
+	<script>
+	    var prefix = ctx + "interface/trade";
+		
+        function setTrade(){
+        	var interface_Flag = $("#interfaceFlag").val();
+
+        	$("#div_778390").attr("style","display:none");
+        	$("#div_778391").attr("style","display:none");
+        	$("#div_778393").attr("style","display:none");
+        	$("#div_778396").attr("style","display:none");
+        	$("#div_778398").attr("style","display:none");
+        	
+        	$("#div_778400").attr("style","display:none");
+        	$("#div_778401").attr("style","display:none");
+        	$("#div_778402").attr("style","display:none");
+        	$("#div_778319").attr("style","display:none");
+        	$("#div_778320").attr("style","display:none");
+        	
+        	$("#div_778322").attr("style","display:none");
+        	$("#div_778324").attr("style","display:none");
+        	$("#div_778329").attr("style","display:none");
+        	$("#div_778336").attr("style","display:none");
+        	$("#div_778359").attr("style","display:none");
+        	
+        	$("#div_778360").attr("style","display:none");
+        	$("#div_778361").attr("style","display:none");
+        	$("#div_778399").attr("style","display:none");
+        	$("#div_778371").attr("style","display:none");
+        	$("#div_778372").attr("style","display:none");
+        	
+        	$("#div_778373").attr("style","display:none");
+        	$("#div_778381").attr("style","display:none");
+        	$("#div_778382").attr("style","display:none");
+        	$("#div_778383").attr("style","display:none");
+        	$("#div_778384").attr("style","display:none");
+        	
+        	$("#div_778385").attr("style","display:none");
+        	$("#div_778387").attr("style","display:none");
+        	
+        	$("#div_" + interface_Flag).attr("style","display:block");
+        	if(interface_Flag == '778390'){
+        		$("#fieldCnt").val('6');
+        		$("#fieldStart").val('1');
+        		$("#fieldEnd").val('4');
+        	}else if(interface_Flag == '778391'){
+        		$("#fieldCnt").val('3');
+        		$("#fieldStart").val('5');
+        		$("#fieldEnd").val('32');
+        	}else if(interface_Flag == '778393'){
+        		$("#fieldCnt").val('1');
+        		$("#fieldStart").val('33');
+        		$("#fieldEnd").val('52');
+        	}else if(interface_Flag == '778396'){
+        		$("#fieldCnt").val('23');
+        		$("#fieldStart").val('53');
+        		$("#fieldEnd").val('56');
+        	}else if(interface_Flag == '778398'){
+        		$("#fieldCnt").val('1');
+        		$("#fieldStart").val('57');
+        		$("#fieldEnd").val('61');
+        	}else if(interface_Flag == '778400'){
+        		$("#fieldCnt").val('1');
+        		$("#fieldStart").val('62');
+        		$("#fieldEnd").val('65');
+        	}else if(interface_Flag == '778401'){
+        		$("#fieldCnt").val('1');
+        		$("#fieldStart").val('66');
+        		$("#fieldEnd").val('70');
+        	}else if(interface_Flag == '778402'){
+        		$("#fieldCnt").val('1');
+        		$("#fieldStart").val('71');
+        		$("#fieldEnd").val('75');
+        	}else if(interface_Flag == '778319'){
+        		$("#fieldCnt").val('1');
+        		$("#fieldStart").val('76');
+        		$("#fieldEnd").val('80');
+        	}else if(interface_Flag == '778320'){
+        		$("#fieldCnt").val('3');
+        		$("#fieldStart").val('81');
+        		$("#fieldEnd").val('90');
+        	}else if(interface_Flag == '778322'){
+        		$("#fieldCnt").val('3');
+        		$("#fieldStart").val('91');
+        		$("#fieldEnd").val('100');
+        	}else if(interface_Flag == '778324'){
+        		$("#fieldCnt").val('3');
+        		$("#fieldStart").val('101');
+        		$("#fieldEnd").val('108');
+        	}else if(interface_Flag == '778329'){
+        		$("#fieldCnt").val('3');
+        		$("#fieldStart").val('109');
+        		$("#fieldEnd").val('114');
+        	}else if(interface_Flag == '778336'){
+        		$("#fieldCnt").val('4');
+        		$("#fieldStart").val('115');
+        		$("#fieldEnd").val('122');
+        	}else if(interface_Flag == '778359'){
+        		$("#fieldCnt").val('7');
+        		$("#fieldStart").val('123');
+        		$("#fieldEnd").val('135');
+        	}else if(interface_Flag == '778360'){
+        		$("#fieldCnt").val('5');
+        		$("#fieldStart").val('136');
+        		$("#fieldEnd").val('144');
+        	}else if(interface_Flag == '778361'){
+        		$("#fieldCnt").val('7');
+        		$("#fieldStart").val('145');
+        		$("#fieldEnd").val('159');
+        	}else if(interface_Flag == '778399'){
+        		$("#fieldCnt").val('3');
+        		$("#fieldStart").val('160');
+        		$("#fieldEnd").val('166');
+        	}else if(interface_Flag == '778371'){
+        		$("#fieldCnt").val('2');
+        		$("#fieldStart").val('0');
+        		$("#fieldEnd").val('0');
+        	}else if(interface_Flag == '778372'){
+        		$("#fieldCnt").val('28');
+        		$("#fieldStart").val('167');
+        		$("#fieldEnd").val('171');
+        	}else if(interface_Flag == '778373'){
+        		$("#fieldCnt").val('14');
+        		$("#fieldStart").val('195');
+        		$("#fieldEnd").val('195');
+        	}else if(interface_Flag == '778381'){
+        		$("#fieldCnt").val('39');
+        		$("#fieldStart").val('172');
+        		$("#fieldEnd").val('176');
+        	}else if(interface_Flag == '778382'){
+        		$("#fieldCnt").val('19');
+        		$("#fieldStart").val('177');
+        		$("#fieldEnd").val('180');
+        	}else if(interface_Flag == '778383'){
+        		$("#fieldCnt").val('10');
+        		$("#fieldStart").val('181');
+        		$("#fieldEnd").val('184');
+        	}else if(interface_Flag == '778384'){
+        		$("#fieldCnt").val('9');
+        		$("#fieldStart").val('185');
+        		$("#fieldEnd").val('188');
+        	}else if(interface_Flag == '778385'){
+        		$("#fieldCnt").val('14');
+        		$("#fieldStart").val('189');
+        		$("#fieldEnd").val('192');
+        	}else if(interface_Flag == '778387'){
+        		$("#fieldCnt").val('10');
+        		$("#fieldStart").val('193');
+        		$("#fieldEnd").val('194');
+        	}
+        }
+        
+        function query(){
+        	$("#div_bootstrap-table778391").attr("style","display:none");
+        	$("#div_bootstrap-table778390").attr("style","display:none");
+        	$("#div_bootstrap-table778393").attr("style","display:none");
+        	$("#div_bootstrap-table778396").attr("style","display:none");
+        	$("#div_bootstrap-table778398").attr("style","display:none");
+        	
+        	$("#div_bootstrap-table778400").attr("style","display:none");
+        	$("#div_bootstrap-table778401").attr("style","display:none");
+        	$("#div_bootstrap-table778402").attr("style","display:none");
+        	$("#div_bootstrap-table778319").attr("style","display:none");
+        	$("#div_bootstrap-table778320").attr("style","display:none");
+
+        	$("#div_bootstrap-table778322").attr("style","display:none");
+        	$("#div_bootstrap-table778324").attr("style","display:none");
+        	$("#div_bootstrap-table778329").attr("style","display:none");
+        	$("#div_bootstrap-table778336").attr("style","display:none");
+        	$("#div_bootstrap-table778359").attr("style","display:none");
+        	
+        	$("#div_bootstrap-table778360").attr("style","display:none");
+        	$("#div_bootstrap-table778361").attr("style","display:none");
+        	$("#div_bootstrap-table778399").attr("style","display:none");
+        	$("#div_bootstrap-table778371").attr("style","display:none");
+        	$("#div_bootstrap-table778372").attr("style","display:none");
+
+        	$("#div_bootstrap-table778373").attr("style","display:none");
+        	$("#div_bootstrap-table778381").attr("style","display:none");
+        	$("#div_bootstrap-table778382").attr("style","display:none");
+        	$("#div_bootstrap-table778383").attr("style","display:none");
+        	$("#div_bootstrap-table778384").attr("style","display:none");
+
+        	$("#div_bootstrap-table778385").attr("style","display:none");
+        	$("#div_bootstrap-table778387").attr("style","display:none");
+        	
+        	var interface_Flag = $("#interfaceFlag").val();
+
+        	$("#div_bootstrap-table" + interface_Flag).attr("style","display:block");
+        	$.table.search('form-detail-trade', 'bootstrap-table' + interface_Flag);
+        	
+        }
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778390",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+		        columns: [{
+   					field : 'field1',
+   					title : '资金卡号'
+   				}, {
+   					field : 'field2',
+   					title : '客户名称'
+   				}, {
+   					field : 'field3',
+   					title : '基金交易账户'
+   				}, {
+   					field : 'field4',
+   					title : '开户日期'
+   				}, {
+   					field : 'field5',
+   					title : '风险承受度'
+   				}, {
+   					field : 'field6',
+   					title : '评估日期'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778391",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '风险承受度'
+   				}, {
+   					field : 'field3',
+   					title : '理财帐号'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778393",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778396",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '证件类型'
+   				}, {
+   					field : 'field2',
+   					title : '证件号码'
+   				}, {
+   					field : 'field3',
+   					title : '证件有效日期'
+   				}, {
+   					field : 'field4',
+   					title : '出生日'
+   				}, {
+   					field : 'field5',
+   					title : '性别'
+   				}, {
+   					field : 'field6',
+   					title : '婚姻状况'
+   				}, {
+   					field : 'field7',
+   					title : '最高学历'
+   				}, {
+   					field : 'field8',
+   					title : '职业类型'
+   				}, {
+   					field : 'field9',
+   					title : '户籍地址'
+   				}, {
+   					field : 'field10',
+   					title : '户籍地址邮编'
+   				}, {
+   					field : 'field11',
+   					title : '通讯地址'
+   				}, {
+   					field : 'field12',
+   					title : '通讯地址邮编'
+   				}, {
+   					field : 'field13',
+   					title : '通讯电话'
+   				}, {
+   					field : 'field14',
+   					title : '手机'
+   				}, {
+   					field : 'field15',
+   					title : '电子邮件'
+   				}, {
+   					field : 'field16',
+   					title : '对帐单寄送方式'
+   				}, {
+   					field : 'field17',
+   					title : '报告寄送地址类型'
+   				}, {
+   					field : 'field18',
+   					title : '推荐人工号'
+   				}, {
+   					field : 'field19',
+   					title : '推荐人名称'
+   				}, {
+   					field : 'field20',
+   					title : '风险承受度'
+   				}, {
+   					field : 'field21',
+   					title : '工作单位'
+   				}, {
+   					field : 'field22',
+   					title : '工作单位电话'
+   				}, {
+   					field : 'field23',
+   					title : '工作部门'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778398",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '风险承受度'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778400",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '是否失效'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778401",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778402",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '风险承受度'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778319",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '是否做风险申明'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778320",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '申请金额'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778322",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+                	field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '申请金额'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778324",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+                	field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '申请份数'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778329",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+                	field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '分红方式'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778336",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+                	field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '目标基金代码'
+   				}, {
+   					field : 'field4',
+   					title : '申请份数'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778359",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '申请金额'
+   				}, {
+   					field : 'field4',
+   					title : '定投开始日'
+   				}, {
+   					field : 'field5',
+   					title : '定投停止日'
+   				}, {
+   					field : 'field6',
+   					title : '定投每月发送日'
+   				}, {
+   					field : 'field7',
+   					title : '定投期数'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778360",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '申请金额'
+   				}, {
+   					field : 'field4',
+   					title : '定投计划编号'
+   				}, {
+   					field : 'field5',
+   					title : '定投每月发送日'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778361",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+                	field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '申请金额'
+   				}, {
+   					field : 'field4',
+   					title : '定投计划编号'
+   				}, {
+   					field : 'field5',
+   					title : '定投开始日'
+   				}, {
+   					field : 'field6',
+   					title : '定投停止日'
+   				}, {
+   					field : 'field7',
+   					title : '定投每月发送日'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778399",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '原申请单编号'
+   				}, {
+   					field : 'field3',
+   					title : '原交易类型'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778371",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '登记公司代码'
+   				}, {
+   					field : 'field2',
+   					title : '登记公司简称'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778372",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '登记公司代码'
+   				}, {
+   					field : 'field2',
+   					title : '登记公司简称'
+   				}, {
+   					field : 'field3',
+   					title : '基金代码'
+   				}, {
+   					field : 'field4',
+   					title : '基金简称'
+   				}, {
+   					field : 'field5',
+   					title : '结算币种'
+   				}, 
+   				{
+   					field : 'field6',
+   					title : '基金类型'
+   				}, {
+   					field : 'field7',
+   					title : '风险等级'
+   				}, {
+   					field : 'field8',
+   					title : '份额类别'
+   				}, {
+   					field : 'field9',
+   					title : '可认购'
+   				}, {
+   					field : 'field10',
+   					title : '可申购'
+   				}, 
+   				{
+   					field : 'field11',
+   					title : '可赎回'
+   				}, {
+   					field : 'field12',
+   					title : '可转入'
+   				}, {
+   					field : 'field13',
+   					title : '可转出'
+   				}, {
+   					field : 'field14',
+   					title : '个人最高认购金额'
+   				}, {
+   					field : 'field15',
+   					title : '个人首次认购最低金额'
+   				}, 
+   				{
+   					field : 'field16',
+   					title : '个人追加认购最低金额'
+   				}, {
+   					field : 'field17',
+   					title : '个人首次申购最低金额'
+   				}, {
+   					field : 'field18',
+   					title : '个人追加申购最低金额'
+   				}, {
+   					field : 'field19',
+   					title : '个人最低持有份额'
+   				}, {
+   					field : 'field20',
+   					title : '个人最低转换份额'
+   				}, 
+   				{
+   					field : 'field21',
+   					title : '个人最低赎回份额'
+   				}, {
+   					field : 'field22',
+   					title : '个人最高赎回份额'
+   				}, {
+   					field : 'field23',
+   					title : '分红方式控制'
+   				}, {
+   					field : 'field24',
+   					title : '分红方式'
+   				}, {
+   					field : 'field25',
+   					title : '有定期定额业务'
+   				}, {
+   					field : 'field26',
+   					title : '定期定额申购最低金额'
+   				}, {
+   					field : 'field27',
+   					title : '最新净值日'
+   				}, {
+   					field : 'field28',
+   					title : '最新净值'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778373",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '转出基金代码'
+   				}, {
+   					field : 'field2',
+   					title : '转出基金简称'
+   				},  {
+   					field : 'field3',
+   					title : '结算币种'
+   				},  {
+   					field : 'field4',
+   					title : '转出基金个人最低持有份额'
+   				},  {
+   					field : 'field5',
+   					title : '转出基金个人最低转换份额'
+   				},  {
+   					field : 'field6',
+   					title : '转出基金最新净值日'
+   				},  {
+   					field : 'field7',
+   					title : '转出基金最新净值'
+   				},  {
+   					field : 'field8',
+   					title : '转入基金代码'
+   				},  {
+   					field : 'field9',
+   					title : '转入基金简称'
+   				},  {
+   					field : 'field10',
+   					title : '基金风险等级'
+   				},  {
+   					field : 'field11',
+   					title : '转入基金个人首次申购最低金额'
+   				},  {
+   					field : 'field12',
+   					title : '转入基金个人追加申购最低金额'
+   				},  {
+   					field : 'field13',
+   					title : '转入基金最新净值日'
+   				},  {
+   					field : 'field14',
+   					title : '转入基金最新净值'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778381",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '基金代码'
+   				}, {
+   					field : 'field2',
+   					title : '基金简称'
+   				},{
+   					field : 'field3',
+   					title : '结算币种'
+   				},{
+   					field : 'field4',
+   					title : '基金类型'
+   				},{
+   					field : 'field5',
+   					title : '基金风险等级'
+   				},{
+   					field : 'field6',
+   					title : '份额类别'
+   				},{
+   					field : 'field7',
+   					title : '可认购'
+   				},{
+   					field : 'field8',
+   					title : '可申购'
+   				},{
+   					field : 'field9',
+   					title : '可赎回'
+   				},{
+   					field : 'field10',
+   					title : '可转入'
+   				},{
+   					field : 'field11',
+   					title : '可转出'
+   				},{
+   					field : 'field12',
+   					title : '个人最高认购金额'
+   				},{
+   					field : 'field13',
+   					title : '个人首次认购最低金额'
+   				},{
+   					field : 'field14',
+   					title : '个人追加认购最低金额'
+   				},{
+   					field : 'field15',
+   					title : '个人首次申购最低金额'
+   				},{
+   					field : 'field16',
+   					title : '个人追加申购最低金额'
+   				},{
+   					field : 'field17',
+   					title : '个人最低持有份额'
+   				},{
+   					field : 'field18',
+   					title : '个人最低转换份额'
+   				},{
+   					field : 'field19',
+   					title : '个人最低赎回份额'
+   				},{
+   					field : 'field20',
+   					title : '个人最高赎回份额'
+   				},{
+   					field : 'field21',
+   					title : '分红方式控制'
+   				},{
+   					field : 'field22',
+   					title : '分红方式'
+   				},{
+   					field : 'field23',
+   					title : '有定期定额业务'
+   				},{
+   					field : 'field24',
+   					title : '定期定额申购最低金额'
+   				},{
+   					field : 'field25',
+   					title : '最新净值日'
+   				},{
+   					field : 'field26',
+   					title : '最新净值'
+   				},{
+   					field : 'field27',
+   					title : '认购中'
+   				},{
+   					field : 'field28',
+   					title : '申购中'
+   				},{
+   					field : 'field29',
+   					title : '赎回中'
+   				},{
+   					field : 'field30',
+   					title : '转换中'
+   				},{
+   					field : 'field31',
+   					title : '总份数'
+   				},{
+   					field : 'field32',
+   					title : '总成本'
+   				},{
+   					field : 'field33',
+   					title : '总市值'
+   				},{
+   					field : 'field34',
+   					title : '可用份数'
+   				},{
+   					field : 'field35',
+   					title : '已转换成本'
+   				},{
+   					field : 'field36',
+   					title : '已实现收益'
+   				},{
+   					field : 'field37',
+   					title : '昨日收益'
+   				},{
+   					field : 'field38',
+   					title : '昨日收益率'
+   				},{
+   					field : 'field39',
+   					title : '累计收益'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778382",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '基金代码'
+   				}, {
+   					field : 'field2',
+   					title : '基金简称'
+   				},  {
+   					field : 'field3',
+   					title : '结算币种'
+   				},  {
+   					field : 'field4',
+   					title : '定期定额开始日'
+   				},  {
+   					field : 'field5',
+   					title : '定期定额停止日'
+   				},  {
+   					field : 'field6',
+   					title : '定期定额每月发送日'
+   				},  {
+   					field : 'field7',
+   					title : '定期定额每扣款金额'
+   				},  {
+   					field : 'field8',
+   					title : '下一定投申购日'
+   				},  {
+   					field : 'field9',
+   					title : '定期定额剩余期数'
+   				},  {
+   					field : 'field10',
+   					title : '定期定额合约编号'
+   				},  {
+   					field : 'field11',
+   					title : '扣款成功次数'
+   				},  {
+   					field : 'field12',
+   					title : '扣款失败次数'
+   				},  {
+   					field : 'field13',
+   					title : '有效状态'
+   				},  {
+   					field : 'field14',
+   					title : '停止原因'
+   				},  {
+   					field : 'field15',
+   					title : '基金风险等级'
+   				},  {
+   					field : 'field16',
+   					title : '定期定额申购最低金额'
+   				},  {
+   					field : 'field17',
+   					title : '最新净值日'
+   				},  {
+   					field : 'field18',
+   					title : '最新净值'
+   				},  {
+   					field : 'field19',
+   					title : '已扣款金额'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778383",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				},{
+   					field : 'field3',
+   					title : '基金简称'
+   				},{
+   					field : 'field4',
+   					title : '业务类型'
+   				},{
+   					field : 'field5',
+   					title : '结算币种'
+   				},{
+   					field : 'field6',
+   					title : '交易份数'
+   				},{
+   					field : 'field7',
+   					title : '交易金额'
+   				},{
+   					field : 'field8',
+   					title : '交易发生日'
+   				},{
+   					field : 'field9',
+   					title : '备注'
+   				},{
+   					field : 'field10',
+   					title : '处理状态'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778384",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '基金简称'
+   				}, {
+   					field : 'field4',
+   					title : '业务类型'
+   				}, {
+   					field : 'field5',
+   					title : '结算币种'
+   				}, {
+   					field : 'field6',
+   					title : '交易份数'
+   				}, {
+   					field : 'field7',
+   					title : '交易金额'
+   				}, {
+   					field : 'field8',
+   					title : '交易发生日'
+   				}, {
+   					field : 'field9',
+   					title : '备注'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778385",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '申请单编号'
+   				}, {
+   					field : 'field2',
+   					title : '基金代码'
+   				}, {
+   					field : 'field3',
+   					title : '基金简称'
+   				}, {
+   					field : 'field4',
+   					title : '结算币种'
+   				}, {
+   					field : 'field5',
+   					title : '交易发生日'
+   				}, {
+   					field : 'field6',
+   					title : '业务类型'
+   				}, {
+   					field : 'field7',
+   					title : '交易确认日'
+   				}, {
+   					field : 'field8',
+   					title : '交易金额'
+   				}, {
+   					field : 'field9',
+   					title : '交易份数'
+   				}, {
+   					field : 'field10',
+   					title : '手续费'
+   				}, {
+   					field : 'field11',
+   					title : '交易净值'
+   				}, {
+   					field : 'field12',
+   					title : '已实现利得'
+   				}, {
+   					field : 'field13',
+   					title : '状态'
+   				}, {
+   					field : 'field14',
+   					title : '备注'
+   				}]
+            };
+            $.table.init(options);
+        });
+        
+        $(function() {
+            var options = {
+            	id: "bootstrap-table778387",
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "用户",
+                columns: [{
+   					field : 'field1',
+   					title : '基金代码'
+   				},{
+   					field : 'field2',
+   					title : '费率类型'
+   				}, {
+   					field : 'field3',
+   					title : '计算基准类型'
+   				}, {
+   					field : 'field4',
+   					title : '下限金额'
+   				}, {
+   					field : 'field5',
+   					title : '上限金额'
+   				}, {
+   					field : 'field6',
+   					title : '计费方式'
+   				}, {
+   					field : 'field7',
+   					title : '费率费额'
+   				}, {
+   					field : 'field8',
+   					title : '费率类型名称'
+   				}, {
+   					field : 'field9',
+   					title : '计算基准类型名称'
+   				}, {
+   					field : 'field10',
+   					title : '计费方式名称'
+   				}]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

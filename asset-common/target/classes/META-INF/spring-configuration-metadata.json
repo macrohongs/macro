@@ -1,0 +1,11 @@
+{
+  "groups": [
+    {
+      "name": "glf",
+      "type": "com.glf.config.Global",
+      "sourceType": "com.glf.config.Global"
+    }
+  ],
+  "properties": [],
+  "hints": []
+}

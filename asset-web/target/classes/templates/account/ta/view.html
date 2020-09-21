@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('TA文件详情')" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+	  <form id="account-ta-form">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+					<div class="select-list">
+						<ul>
+							<li>
+					            <a class="btn btn-info" onclick="$.table.importListExcel()" >
+						            <i class="fa fa-upload"></i> 预览TA文件数据
+						        </a>
+							</li>
+							<li>
+								<a class="btn btn-primary single" onclick="to_edit();">
+						            <i class="fa fa-edit"></i> 修改
+						        </a>
+							</li>
+						</ul>
+					</div>
+			</div>
+			
+			
+		<div class="col-sm-12 search-collapse">
+			<div class="panel-heading">
+                    <div class="panel-options">
+                        <ul class="nav nav-tabs">
+                            <li id="li_01" class="active"><a data-toggle="tab" href="view.html#tab-1">01</a></li>
+                            <li id="li_02" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-2">02</a></li>
+                            <li id="li_03" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-3">03</a></li>
+                            <li id="li_04" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-4">04</a></li>
+                            <li id="li_05" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-5">05</a></li>
+                            <li id="li_06" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-6">06</a></li>
+                            <li id="li_07" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-7">07</a></li>
+                            <li id="li_08" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-8">08</a></li>
+                            <li id="li_09" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-9">09</a></li>
+                            <li id="li_10" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-10">10</a></li>
+                            <li id="li_11" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-11">11</a></li>
+                            <li id="li_12" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-12">12</a></li>
+                            <li id="li_13" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-13">13</a></li>
+                            <li id="li_21" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-21">21</a></li>
+                            <li id="li_24" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-24">24</a></li>
+                            <li id="li_25" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-25">25</a></li>
+                            <li id="li_26" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-26">26</a></li>
+                            <li id="li_C1" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-C1">C1</a></li>
+                            <li id="li_C2" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-C2">C2</a></li>
+                            <li id="li_C3" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-C3">C3</a></li>
+                            <li id="li_C4" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-C4">C4</a></li>
+                            <li id="li_C5" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-C5">C5</a></li>
+                            <li id="li_C6" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-C6">C6</a></li>
+                            <li id="li_R1" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-R1">R1</a></li>
+                            <li id="li_R2" style="display:none" class=""><a data-toggle="tab" href="view.html#tab-R2">R2</a></li>
+                         </ul>
+                    </div>
+                </div>
+		        <div class="panel-body">
+                       <div class="tab-content">
+                           <div id="tab-1" class="tab-pane active">
+                           		<div class="col-sm-12 select-table table-bordered">
+									<table id="bootstrap-table01"></table>
+								</div>
+						   </div>
+	                       <div id="tab-2" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table02"></table>
+								</div>
+						   </div>
+	                       <div id="tab-3" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table03"></table>
+								</div>
+						   </div>
+	                       <div id="tab-4" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table04"></table>
+								</div>
+						   </div>
+	                       <div id="tab-5" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table05"></table>
+								</div>
+						   </div>
+	                       <div id="tab-6" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table06"></table>
+								</div>
+						   </div>
+	                       <div id="tab-7" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table07"></table>
+								</div>
+						   </div>
+	                       <div id="tab-8" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table08"></table>
+								</div>
+						   </div>
+	                       <div id="tab-9" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table09"></table>
+								</div>
+						   </div>
+	                       <div id="tab-10" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table10"></table>
+								</div>
+						   </div>
+	                       <div id="tab-11" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table11"></table>
+								</div>
+						   </div>
+	                       <div id="tab-12" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table12"></table>
+								</div>
+						   </div>
+	                       <div id="tab-13" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table13"></table>
+								</div>
+						   </div>
+	                       <div id="tab-21" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table21"></table>
+								</div>
+						   </div>
+	                       <div id="tab-24" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table24"></table>
+								</div>
+						   </div>
+	                       <div id="tab-25" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table25"></table>
+								</div>
+						   </div>
+	                       <div id="tab-26" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-table26"></table>
+								</div>
+						   </div>
+	                       <div id="tab-C1" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableC1"></table>
+								</div>
+						   </div>
+	                       <div id="tab-C2" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableC2"></table>
+								</div>
+						   </div>
+	                       <div id="tab-C3" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableC3"></table>
+								</div>
+						   </div>
+	                       <div id="tab-C4" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableC4"></table>
+								</div>
+						   </div>
+	                       <div id="tab-C5" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableC5"></table>
+								</div>
+						   </div>
+	                       <div id="tab-C6" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableC6"></table>
+								</div>
+						   </div>
+	                       <div id="tab-R1" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableR1"></table>
+								</div>
+						   </div>
+	                       <div id="tab-R2" class="tab-pane">
+                           		<div class="col-sm-12 select-table table-bordered">
+						   			<table id="bootstrap-tableR2"></table>
+								</div>
+						   </div>
+                       </div>
+                 </div>
+                 
+			
+			</div>
+		</div>
+	  </form>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+		var prefix = ctx + "account/ta";
+		
+		function to_edit(){
+    	    $.modal.open("净值预览", prefix + "/edit");
+		}
+
+		$(function() {
+			var options = {
+	            	id: "bootstrap-table01",
+	                url: prefix + "/list01",
+			        importUrl: prefix + "/importData",
+			        showSearch: false,
+			        showRefresh: false,
+			        showToggle: false,
+			        showColumns: false,
+	   		     	pagination:false,
+			        height: 400,
+			        showExport: true,
+			        exportOptions: {
+			        	ignoreColumn: []  
+			        },
+			        modalName: "TA文件",
+			        columns: [{field : 'field1',title : '通讯地址'},
+			                  {field : 'field2',title : '法人代表身份证件代码'},
+			                  {field : 'field3',title : '法人代表证件类型'},
+			                  {field : 'field4',title : '法人代表姓名'},
+			                  {field : 'field5',title : '申请单编号'},
+			                  {field : 'field6',title : '个人证件类型及机构证件类型'},
+			                  {field : 'field7',title : '投资人证件号码'},
+			                  {field : 'field8',title : '投资人户名'},
+			                  {field : 'field9',title : '交易发生日期'},
+			                  {field : 'field10',title : '交易发生时间'},
+			                  {field : 'field11',title : '个人/机构标志'},
+			                  {field : 'field12',title : '投资人邮政编码'},
+			                  {field : 'field13',title : '经办人证件号码'},
+			                  {field : 'field14',title : '经办人证件类型'},
+			                  {field : 'field15',title : '经办人姓名'},
+			                  {field : 'field16',title : '投资人基金交易账号'},
+			                  {field : 'field17',title : '销售人代码'},
+			                  {field : 'field18',title : '业务代码'},
+			                  {field : 'field19',title : '基金管理人在资金清算机构的交收账号'},
+			                  {field : 'field20',title : '基金管理人在资金清算机构的交收账户名'},
+			                  {field : 'field21',title : '基金资金清算机构代码'},
+			                  {field : 'field22',title : '投资人出生日期'},
+			                  {field : 'field23',title : '投资人在销售人处用于交易的资金账号'},
+			                  {field : 'field24',title : '交易所在地区编号'},
+			                  {field : 'field25',title : '投资人学历'},
+			                  {field : 'field26',title : '投资人E-MAIL地址'},
+			                  {field : 'field27',title : '投资人传真号码'},
+			                  {field : 'field28',title : '投资人职业代码'},
+			                  {field : 'field29',title : '投资人住址电话'},
+			                  {field : 'field30',title : '投资人年收入'},
+			                  {field : 'field31',title : '投资人手机号码'},
+			                  {field : 'field32',title : '网点号码'},
+			                  {field : 'field33',title : '投资人单位电话号码'},
+			                  {field : 'field34',title : '投资人户名简称'},
+			                  {field : 'field35',title : '密函编号'},
+			                  {field : 'field36',title : '投资人性别'},
+			                  {field : 'field37',title : '上交所证券账号'},
+			                  {field : 'field38',title : '深交所证券账号'},
+			                  {field : 'field39',title : '投资人基金账号'},
+			                  {field : 'field40',title : '投资人电话号码'},
+			                  {field : 'field41',title : '使用的交易手段'},
+			                  {field : 'field42',title : '未成年人标志'},
+			                  {field : 'field43',title : '对账单寄送选择'},
+			                  {field : 'field44',title : '经办人识别方式'},
+			                  {field : 'field45',title : '基金账户卡的凭证号'},
+			                  {field : 'field46',title : '多渠道开户标志'},
+			                  {field : 'field47',title : '对方销售人处投资人基金交易账号'},
+			                  {field : 'field48',title : '投资人收款银行账户户名'},
+			                  {field : 'field49',title : '投资人收款银行账户账号'},
+			                  {field : 'field50',title : '投资人收款银行账户开户行'},
+			                  {field : 'field51',title : '对账单寄送方式'},
+			                  {field : 'field52',title : '投资者国籍'},
+			                  {field : 'field53',title : '操作（清算）网点编号'},
+			                  {field : 'field54',title : '经纪人'},
+			                  {field : 'field55',title : '工作单位名称'},
+			                  {field : 'field56',title : '证件有效日期'},
+			                  {field : 'field57',title : '机构经办人身份证件有效日期'},
+			                  {field : 'field58',title : '机构法人身份证件有效日期'},
+			                  {field : 'field59',title : '客户风险等级'},
+			                  {field : 'field60',title : '机构法人经营范围'},
+			                  {field : 'field61',title : '控股股东'},
+			                  {field : 'field62',title : '实际控制人'},
+			                  {field : 'field63',title : '婚姻状况'},
+			                  {field : 'field64',title : '家庭人口数'},
+			                  {field : 'field65',title : '家庭资产'},
+			                  {field : 'field66',title : '媒体偏好'},
+			                  {field : 'field67',title : '机构类型'},
+			                  {field : 'field68',title : '投资人英文名'},
+			                  {field : 'field69',title : '投资人英文姓'},
+			                  {field : 'field70',title : '行业'},
+			                  {field : 'field71',title : '企业性质'},
+			                  {field : 'field72',title : '员工人数'},
+			                  {field : 'field73',title : '兴趣爱好类型'},
+			                  {field : 'field74',title : '省/直辖市'},
+			                  {field : 'field75',title : '市'},
+			                  {field : 'field76',title : '县/区'},
+			                  {field : 'field77',title : '推荐人'},
+			                  {field : 'field78',title : '推荐人类型'},
+			                  {field : 'field79',title : '受理方式'},
+			                  {field : 'field80',title : '冻结原因'},
+			                  {field : 'field81',title : '冻结截止日期'},
+			                  {field : 'field82',title : 'TA的原确认流水号'},
+			                  {field : 'field83',title : '原申请单编号'},
+			                  {field : 'field84',title : '摘要/说明'}]
+	            };
+	            $.table.init(options);
+        });
+		
+		$(function() {
+            var options = {
+                	id: "bootstrap-table02",
+                    url: prefix + "/list02",
+			        importUrl: prefix + "/importData",
+       		        showSearch: false,
+       		        showRefresh: false,
+       		        showToggle: false,
+       		        showColumns: false,
+       		     	pagination:false,
+    		        height: 400,
+    		        showExport: true,
+    		        exportOptions: {
+    		        	ignoreColumn: []  
+    		        },
+    		        modalName: "TA文件",
+    		        columns: [{field : 'field1',title : '申请单编号'},
+    		                  {field : 'field2',title : '交易确认日期'},
+    		                  {field : 'field3',title : '交易处理返回代码'},
+    		                  {field : 'field4',title : '投资人基金交易账号'},
+    		                  {field : 'field5',title : '销售人代码'},
+    		                  {field : 'field6',title : '业务代码'},
+    		                  {field : 'field7',title : '投资人基金账号'},
+    		                  {field : 'field8',title : '多渠道开户标志'},
+    		                  {field : 'field9',title : 'TA确认交易流水号'},
+    		                  {field : 'field10',title : '交易发生日期'},
+    		                  {field : 'field11',title : '交易发生时间'},
+    		                  {field : 'field12',title : '网点号码'},
+    		                  {field : 'field13',title : '是否注册登记人发起业务标志'},
+    		                  {field : 'field14',title : '个人证件类型及机构证件类型'},
+    		                  {field : 'field15',title : '投资人证件号码'},
+    		                  {field : 'field16',title : '投资人户名'},
+    		                  {field : 'field17',title : '个人/机构标志'},
+    		                  {field : 'field18',title : '投资人户名简称'},
+    		                  {field : 'field19',title : '基金账户卡的凭证号'},
+    		                  {field : 'field20',title : '交易所在地区编号'},
+    		                  {field : 'field21',title : '对方销售人处投资人基金交易账号'},
+    		                  {field : 'field22',title : '操作（清算）网点编号'},
+    		                  {field : 'field23',title : '摘要/说明'},
+    		                  {field : 'field24',title : 'TA客户编号'},
+    		                  {field : 'field25',title : '冻结原因'},
+    		                  {field : 'field26',title : '冻结截止日期'},
+    		                  {field : 'field27',title : '出错详细信息'}]
+                };
+                $.table.init(options);
+        });
+		
+		$(function() {
+            var options = {
+            	id: "bootstrap-table03",
+                url: prefix + "/list03",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        height: 400,
+		        modalName: "TA文件",
+		        exportOptions: {
+		        	ignoreColumn: []  
+		        },
+		        columns: [{field : 'field1',title : '申请单编号'},
+		                  {field : 'field2',title : '基金代码'},
+		                  {field : 'field3',title : '巨额赎回处理标志'},
+		                  {field : 'field4',title : '交易发生日期'},
+		                  {field : 'field5',title : '交易发生时间'},
+		                  {field : 'field6',title : '投资人基金交易账号'},
+		                  {field : 'field7',title : '销售人代码'},
+		                  {field : 'field8',title : '申请基金份数'},
+		                  {field : 'field9',title : '申请金额'},
+		                  {field : 'field10',title : '业务代码'},
+		                  {field : 'field11',title : '投资人基金账号'},
+		                  {field : 'field12',title : '销售佣金折扣率'},
+		                  {field : 'field13',title : '投资人在销售人处用于交易的资金账号'},
+		                  {field : 'field14',title : '交易所在地区编号'},
+		                  {field : 'field15',title : '结算币种'},
+		                  {field : 'field16',title : '网点号码'},
+		                  {field : 'field17',title : '原申请单编号'},
+		                  {field : 'field18',title : '原申购日期'},
+		                  {field : 'field19',title : '个人/机构标志'},
+		                  {field : 'field20',title : '交易申请有效天数'},
+		                  {field : 'field21',title : '预约赎回工作日天数'},
+		                  {field : 'field22',title : '预约赎回日期'},
+		                  {field : 'field23',title : 'TA的原确认流水号'},
+		                  {field : 'field24',title : '定时定额申购日期'},
+		                  {field : 'field25',title : 'TA确认交易流水号'},
+		                  {field : 'field26',title : '定时定额申购期限'},
+		                  {field : 'field27',title : '指定申购日期'},
+		                  {field : 'field28',title : '对方销售人代码'},
+		                  {field : 'field29',title : '手续费'},
+		                  {field : 'field30',title : '对方网点号'},
+		                  {field : 'field31',title : '对方销售人处投资人基金交易账号'},
+		                  {field : 'field32',title : '对方所在地区编号'},
+		                  {field : 'field33',title : '红利比例'},
+		                  {field : 'field34',title : '摘要/说明'},
+		                  {field : 'field35',title : '转换时的目标基金代码'},
+		                  {field : 'field36',title : '交易后端收费总额'},
+		                  {field : 'field37',title : '收费方式'},
+		                  {field : 'field38',title : 'TA的原确认日期'},
+		                  {field : 'field39',title : '明细标志'},
+		                  {field : 'field40',title : '原申请日期'},
+		                  {field : 'field41',title : '默认分红方式'},
+		                  {field : 'field42',title : '冻结原因'},
+		                  {field : 'field43',title : '冻结截止日期'},
+		                  {field : 'field44',title : '定时定额品种代码'},
+		                  {field : 'field45',title : '定时定额申购序号'},
+		                  {field : 'field46',title : '定期定额种类'},
+		                  {field : 'field47',title : '对方基金账号'},
+		                  {field : 'field48',title : '对方TA代码'},
+		                  {field : 'field49',title : '操作（清算）网点编号'},
+		                  {field : 'field50',title : 'TA客户编号'},
+		                  {field : 'field51',title : '对方基金份额类别'},
+		                  {field : 'field52',title : '定期定额协议号'},
+		                  {field : 'field53',title : '定时定额申购起始日期'},
+		                  {field : 'field54',title : '定时定额申购终止日期'},
+		                  {field : 'field55',title : '定时定额申购每周期发送日'},
+		                  {field : 'field56',title : '经纪人'},
+		                  {field : 'field57',title : '促销活动代码'},
+		                  {field : 'field58',title : '受理方式'},
+		                  {field : 'field59',title : '强制赎回类型'},
+		                  {field : 'field60',title : '带走收益标志'},
+		                  {field : 'field61',title : '定投目的'},
+		                  {field : 'field62',title : '定投频率'},
+		                  {field : 'field63',title : '定投周期单位'},
+		                  {field : 'field64',title : '定投期数'},
+		                  {field : 'field65',title : '资金方式'},
+		                  {field : 'field66',title : '明细资金方式'},
+		                  {field : 'field67',title : '补差费折扣率'},
+		                  {field : 'field68',title : '组合编号'},
+		                  {field : 'field69',title : '指定认购日期'},
+		                  {field : 'field70',title : '使用的交易手段'},
+		                  {field : 'field71',title : '巨额购买处理标志'},
+		                  {field : 'field72',title : '收费类型'},
+		                  {field : 'field73',title : '指定费率'},
+		                  {field : 'field74',title : '指定费用'}]
+            };
+            $.table.init(options);
+        });
+		
+		$(function() {
+            var options = {
+            	id: "bootstrap-table04",
+                url: prefix + "/list04",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: [{field : 'field1',title : '申请单编号'},
+		                  {field : 'field2',title : '交易确认日期'},
+		                  {field : 'field3',title : '结算币种'},
+		                  {field : 'field4',title : '基金账户交易确认份数'},
+		                  {field : 'field5',title : '每笔交易确认金额'},
+		                  {field : 'field6',title : '基金代码'},
+		                  {field : 'field7',title : '巨额赎回处理标志'},
+		                  {field : 'field8',title : '交易发生日期'},
+		                  {field : 'field9',title : '交易发生时间'},
+		                  {field : 'field10',title : '交易处理返回代码'},
+		                  {field : 'field11',title : '投资人基金交易账号'},
+		                  {field : 'field12',title : '销售人代码'},
+		                  {field : 'field13',title : '申请基金份数'},
+		                  {field : 'field14',title : '申请金额'},
+		                  {field : 'field15',title : '业务代码'},
+		                  {field : 'field16',title : '投资人基金账号'},
+		                  {field : 'field17',title : 'TA确认交易流水号'},
+		                  {field : 'field18',title : '业务过程完全结束标识'},
+		                  {field : 'field19',title : '销售佣金折扣率'},
+		                  {field : 'field20',title : '投资人在销售人处用于交易的资金账号'},
+		                  {field : 'field21',title : '交易所在地区编号'},
+		                  {field : 'field22',title : '交易数据下传日期'},
+		                  {field : 'field23',title : '手续费'},
+		                  {field : 'field24',title : '代理费'},
+		                  {field : 'field25',title : '基金单位净值'},
+		                  {field : 'field26',title : '网点号码'},
+		                  {field : 'field27',title : '原申请单编号'},
+		                  {field : 'field28',title : '原申购日期'},
+		                  {field : 'field29',title : '其他费用1'},
+		                  {field : 'field30',title : '个人/机构标志'},
+		                  {field : 'field31',title : '预约赎回日期'},
+		                  {field : 'field32',title : '印花税'},
+		                  {field : 'field33',title : '交易申请有效天数'},
+		                  {field : 'field34',title : '费率'},
+		                  {field : 'field35',title : '交易后端收费总额'},
+		                  {field : 'field36',title : 'TA的原确认流水号'},
+		                  {field : 'field37',title : '摘要/说明'},
+		                  {field : 'field38',title : '定时定额申购日期'},
+		                  {field : 'field39',title : '对方销售人代码'},
+		                  {field : 'field40',title : '对方网点号'},
+		                  {field : 'field41',title : '对方销售人处投资人基金交易账号'},
+		                  {field : 'field42',title : '对方所在地区编号'},
+		                  {field : 'field43',title : '转入/转出标识'},
+		                  {field : 'field44',title : '默认分红方式'},
+		                  {field : 'field45',title : '红利比例'},
+		                  {field : 'field46',title : '基金账户利息金额'},
+		                  {field : 'field47',title : '利息产生的基金份数'},
+		                  {field : 'field48',title : '利息税'},
+		                  {field : 'field49',title : '交易价格'},
+		                  {field : 'field50',title : '冻结截止日期'},
+		                  {field : 'field51',title : '冻结原因'},
+		                  {field : 'field52',title : '税金'},
+		                  {field : 'field53',title : '目标基金的单位净值'},
+		                  {field : 'field54',title : '目标基金的价格'},
+		                  {field : 'field55',title : '目标基金的确认份数'},
+		                  {field : 'field56',title : '最少收费'},
+		                  {field : 'field57',title : '其他费用2'},
+		                  {field : 'field58',title : '原申请日期'},
+		                  {field : 'field59',title : '过户费'},
+		                  {field : 'field60',title : '是否注册登记人发起业务标志'},
+		                  {field : 'field61',title : '收费方式'},
+		                  {field : 'field62',title : '明细标志'},
+		                  {field : 'field63',title : '预约赎回标志'},
+		                  {field : 'field64',title : '冻结方式'},
+		                  {field : 'field65',title : 'TA的原确认日期'},
+		                  {field : 'field66',title : '强行赎回原因'},
+		                  {field : 'field67',title : '转换时的目标基金代码'},
+		                  {field : 'field68',title : '交易确认费用合计'},
+		                  {field : 'field69',title : '定时定额品种代码'},
+		                  {field : 'field70',title : '定时定额申购序号'},
+		                  {field : 'field71',title : '定期定额种类'},
+		                  {field : 'field72',title : '对方基金账号'},
+		                  {field : 'field73',title : '对方TA代码'},
+		                  {field : 'field74',title : '操作（清算）网点编号'},
+		                  {field : 'field75',title : 'TA客户编号'},
+		                  {field : 'field76',title : '对方基金份额类别'},
+		                  {field : 'field77',title : '定期定额协议号'},
+		                  {field : 'field78',title : '定时定额申购起始日期'},
+		                  {field : 'field79',title : '定时定额申购终止日期'},
+		                  {field : 'field80',title : '定时定额申购每周期发送日'},
+		                  {field : 'field81',title : '经纪人'},
+		                  {field : 'field82',title : '促销活动代码'},
+		                  {field : 'field83',title : '受理方式'},
+		                  {field : 'field84',title : '强制赎回类型'},
+		                  {field : 'field85',title : '最后更新日'},
+		                  {field : 'field86',title : '带走收益标志'},
+		                  {field : 'field87',title : '定投目的'},
+		                  {field : 'field88',title : '定投频率'},
+		                  {field : 'field89',title : '定投周期单位'},
+		                  {field : 'field90',title : '定投期数'},
+		                  {field : 'field91',title : '资金方式'},
+		                  {field : 'field92',title : '明细资金方式'},
+		                  {field : 'field93',title : '补差费折扣率'},
+		                  {field : 'field94',title : '组合编号'},
+		                  {field : 'field95',title : '退款金额'},
+		                  {field : 'field96',title : '配售比例'},
+		                  {field : 'field97',title : '实际计算折扣'},
+		                  {field : 'field98',title : '转换费'},
+		                  {field : 'field99',title : '补差费'},
+		                  {field : 'field100',title : '业绩报酬'},
+		                  {field : 'field101',title : '业绩补偿'},
+		                  {field : 'field102',title : '份额强制调整标志'},
+		                  {field : 'field103',title : '总TA确认流水号'},
+		                  {field : 'field104',title : '货币基金未付收益金额'},
+		                  {field : 'field105',title : '货币基金未付收益金额正负'},
+		                  {field : 'field106',title : '违约金'},
+		                  {field : 'field107',title : '违约金归基金资产金额'},
+		                  {field : 'field108',title : '惩罚性费用'},
+		                  {field : 'field109',title : '使用的交易手段'},
+		                  {field : 'field110',title : '转换代理费'},
+		                  {field : 'field111',title : '补差代理费'},
+		                  {field : 'field112',title : '出错详细信息'},
+		                  {field : 'field113',title : '巨额购买处理标志'},
+		                  {field : 'field114',title : '认购期间利息'},
+		                  {field : 'field115',title : '计费人'},
+		                  {field : 'field116',title : '份额注册日期'},
+		                  {field : 'field117',title : '基金冻结总份数'},
+		                  {field : 'field118',title : '基金份数余额'},
+		                  {field : 'field119',title : '冻结金额'},
+		                  {field : 'field120',title : '指定认购日期'},
+		                  {field : 'field121',title : '清算资金经清算人划出日期'}]
+            };
+            $.table.init(options);
+        });
+		
+		$(function() {
+            var options = {
+            	id: "bootstrap-table05",
+                url: prefix + "/list05",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        height: 400,
+		        modalName: "TA文件",
+		        columns: [{field : 'field1',title : '持有人可用基金份数'},
+		                  {field : 'field2',title : '基金总份数（含冻结）'},
+		                  {field : 'field3',title : '交易确认日期'},
+		                  {field : 'field4',title : '基金代码'},
+		                  {field : 'field5',title : '投资人基金交易账号'},
+		                  {field : 'field6',title : '销售人代码'},
+		                  {field : 'field7',title : '投资人基金账号'},
+		                  {field : 'field8',title : '基金冻结总份数'},
+		                  {field : 'field9',title : '网点号码'},
+		                  {field : 'field10',title : 'TA确认交易流水号'},
+		                  {field : 'field11',title : '交易后端收费总额'},
+		                  {field : 'field12',title : '收费方式'},
+		                  {field : 'field13',title : '明细标志'},
+		                  {field : 'field14',title : '账户状态'},
+		                  {field : 'field15',title : '份额注册日期'},
+		                  {field : 'field16',title : '货币基金未付收益金额'},
+		                  {field : 'field17',title : '货币基金未付收益金额正负'},
+		                  {field : 'field18',title : '剩余保本金额'},
+		                  {field : 'field19',title : '份额原始来源'},
+		                  {field : 'field20',title : '默认分红方式'}]
+            };
+            $.table.init(options);
+        });
+		
+		$(function() {
+            var options = {
+            	id: "bootstrap-table06",
+                url: prefix + "/list06",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: [{field : 'field1',title : '红利/红利再投资基数'},
+		                  {field : 'field2',title : '交易确认日期'},
+		                  {field : 'field3',title : '结算币种'},
+		                  {field : 'field4',title : '基金账户红利再投资基金份数'},
+		                  {field : 'field5',title : '分红日/发放日'},
+		                  {field : 'field6',title : '基金账户红利资金'},
+		                  {field : 'field7',title : '除权日'},
+		                  {field : 'field8',title : '每笔交易确认金额'},
+		                  {field : 'field9',title : '基金代码'},
+		                  {field : 'field10',title : '权益登记日期'},
+		                  {field : 'field11',title : '交易处理返回代码'},
+		                  {field : 'field12',title : '投资人基金交易账号'},
+		                  {field : 'field13',title : '销售人代码'},
+		                  {field : 'field14',title : '业务代码'},
+		                  {field : 'field15',title : '投资人基金账号'},
+		                  {field : 'field16',title : '单位基金分红金额（含税）'},
+		                  {field : 'field17',title : '默认分红方式'},
+		                  {field : 'field18',title : '投资人在销售人处用于交易的资金账号'},
+		                  {field : 'field19',title : '交易所在地区编号'},
+		                  {field : 'field20',title : '交易数据下传日期'},
+		                  {field : 'field21',title : '手续费'},
+		                  {field : 'field22',title : '代理费'},
+		                  {field : 'field23',title : '基金冻结总份数'},
+		                  {field : 'field24',title : '基金单位净值'},
+		                  {field : 'field25',title : '网点号码'},
+		                  {field : 'field26',title : '其他费用1'},
+		                  {field : 'field27',title : '其他费用2'},
+		                  {field : 'field28',title : '个人/机构标志'},
+		                  {field : 'field29',title : '红利比例'},
+		                  {field : 'field30',title : 'TA确认交易流水号'},
+		                  {field : 'field31',title : '印花税'},
+		                  {field : 'field32',title : '冻结金额'},
+		                  {field : 'field33',title : '过户费'},
+		                  {field : 'field34',title : '收费方式'},
+		                  {field : 'field35',title : '计费人'},
+		                  {field : 'field36',title : '分红单位'},
+		                  {field : 'field37',title : '冻结再投资份额'},
+		                  {field : 'field38',title : '分红类型'},
+		                  {field : 'field39',title : '原申请单编号'},
+		                  {field : 'field40',title : '业绩报酬'},
+		                  {field : 'field41',title : '业绩补偿'}]
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table07",
+                url: prefix + "/list07",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+		        height: 400,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: [{field : 'field1',title : '基金名称'},
+		                  {field : 'field2',title : '基金总份数'},
+		                  {field : 'field3',title : '基金代码'},
+		                  {field : 'field4',title : '基金状态'},
+		                  {field : 'field5',title : '基金单位净值'},
+		                  {field : 'field6',title : '基金净值日期'},
+		                  {field : 'field7',title : '净值类型'},
+		                  {field : 'field8',title : '累计基金单位净值'},
+		                  {field : 'field9',title : '基金转换状态'},
+		                  {field : 'field10',title : '定期定额状态'},
+		                  {field : 'field11',title : '转托管状态'},
+		                  {field : 'field12',title : '基金规模'},
+		                  {field : 'field13',title : '结算币种'},
+		                  {field : 'field14',title : '公告标志'},
+		                  {field : 'field15',title : '默认分红方式'},
+		                  {field : 'field16',title : '法人追加认购金额'},
+		                  {field : 'field17',title : '法人追加认购份数'},
+		                  {field : 'field18',title : '法人首次认购最低金额'},
+		                  {field : 'field19',title : '法人首次认购最低份数'},
+		                  {field : 'field20',title : '托管人代码'},
+		                  {field : 'field21',title : '定时定额申购的金额'},
+		                  {field : 'field22',title : '定时定额申购日期'},
+		                  {field : 'field23',title : '基金最高赎回份数'},
+		                  {field : 'field24',title : '基金最低持有份数'},
+		                  {field : 'field25',title : '基金募集开始日期'},
+		                  {field : 'field26',title : '基金募集结束日期'},
+		                  {field : 'field27',title : '基金管理人'},
+		                  {field : 'field28',title : '个人追加认购份数'},
+		                  {field : 'field29',title : '个人追加认购金额'},
+		                  {field : 'field30',title : '个人首次认购最低份数'},
+		                  {field : 'field31',title : '个人首次认购最低金额'},
+		                  {field : 'field32',title : '注册登记人代码'},
+		                  {field : 'field33',title : '基金发起人'},
+		                  {field : 'field34',title : '交易价格'},
+		                  {field : 'field35',title : '基金面值'},
+		                  {field : 'field36',title : '分红日/发放日'},
+		                  {field : 'field37',title : '权益登记日期'},
+		                  {field : 'field38',title : '除权日'},
+		                  {field : 'field39',title : '个人最高认购份数'},
+		                  {field : 'field40',title : '个人最高认购金额'},
+		                  {field : 'field41',title : '法人最高认购份数'},
+		                  {field : 'field42',title : '法人最高认购金额'},
+		                  {field : 'field43',title : '个人认购份数单位'},
+		                  {field : 'field44',title : '个人认购金额单位'},
+		                  {field : 'field45',title : '法人认购份数单位'},
+		                  {field : 'field46',title : '法人认购金额单位'},
+		                  {field : 'field47',title : '个人首次申购最低金额'},
+		                  {field : 'field48',title : '法人首次申购最低金额'},
+		                  {field : 'field49',title : '个人追加申购最低金额'},
+		                  {field : 'field50',title : '法人追加申购最低金额'},
+		                  {field : 'field51',title : '基金最少赎回份数'},
+		                  {field : 'field52',title : '最低基金转换份数'},
+		                  {field : 'field53',title : '个人发行方式'},
+		                  {field : 'field54',title : '机构发行方式'},
+		                  {field : 'field55',title : '认购方式'},
+		                  {field : 'field56',title : '交易费收取方式'},
+		                  {field : 'field57',title : '下一开放日'},
+		                  {field : 'field58',title : '产品价值线数值'},
+		                  {field : 'field59',title : '累积单位分红'},
+		                  {field : 'field60',title : '货币基金万份收益率'},
+		                  {field : 'field61',title : '货币基金万份收益正负'},
+		                  {field : 'field62',title : '货币基金七日年收益'},
+		                  {field : 'field63',title : '货币基金七日年收益正负'},
+		                  {field : 'field64',title : '保本净值'},
+		                  {field : 'field65',title : '货币基金年收益率'},
+		                  {field : 'field66',title : '货币基金年收益率正负'},
+		                  {field : 'field67',title : '个人最大申购金额'},
+		                  {field : 'field68',title : '法人最大申购金额'},
+		                  {field : 'field69',title : '个人当日累计购买最大金额'},
+		                  {field : 'field70',title : '法人当日累计购买最大金额'},
+		                  {field : 'field71',title : '个人当日累计赎回最大份额'},
+		                  {field : 'field72',title : '法人当日累计赎回最大份额'},
+		                  {field : 'field73',title : '个人最大赎回份额'},
+		                  {field : 'field74',title : '法人最大赎回份额'},
+		                  {field : 'field75',title : '基金当日总收益正负'},
+		                  {field : 'field76',title : '基金当日总收益'},
+		                  {field : 'field77',title : '允许违约赎回标志'},
+		                  {field : 'field78',title : '基金类型'},
+		                  {field : 'field79',title : '基金类型名称'},
+		                  {field : 'field80',title : '注册登记人名称'},
+		                  {field : 'field81',title : '基金管理人名称'},
+		                  {field : 'field82',title : '基金公司客服电话'},
+		                  {field : 'field83',title : '基金公司网站网址'}]
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table08",
+                url: prefix + "/list08",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table09",
+                url: prefix + "/list09",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: true,
+		        height: 400,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table10",
+                url: prefix + "/list10",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table11",
+                url: prefix + "/list11",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table12",
+                url: prefix + "/list12",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table21",
+                url: prefix + "/list21",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table24",
+                url: prefix + "/list24",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table25",
+                url: prefix + "/list25",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        height: 400,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: []
+            };
+            $.table.init(options);
+        });
+		
+
+		$(function() {
+            var options = {
+            	id: "bootstrap-table26",
+                url: prefix + "/list26",
+		        importUrl: prefix + "/importData",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+		        height: 400,
+   		     	pagination:false,
+		        showExport: true,
+		        modalName: "TA文件",
+		        columns: [{field : 'field1',title : '持有人可用基金份数'},
+		                  {field : 'field2',title : '基金总份数（含冻结）'},
+		                  {field : 'field3',title : '交易确认日期'},
+		                  {field : 'field4',title : '基金代码'},
+		                  {field : 'field5',title : '投资人基金交易账号'},
+		                  {field : 'field6',title : '销售人代码'},
+		                  {field : 'field7',title : '投资人基金账号'},
+		                  {field : 'field8',title : '基金冻结总份数'},
+		                  {field : 'field9',title : '网点号码'},
+		                  {field : 'field10',title : 'TA确认交易流水号'},
+		                  {field : 'field11',title : '交易后端收费总额'},
+		                  {field : 'field12',title : '收费方式'},
+		                  {field : 'field13',title : '明细标志'},
+		                  {field : 'field14',title : '账户状态'},
+		                  {field : 'field15',title : '份额注册日期'},
+		                  {field : 'field16',title : '货币基金未付收益金额'},
+		                  {field : 'field17',title : '货币基金未付收益金额正负'},
+		                  {field : 'field18',title : '剩余保本金额'},
+		                  {field : 'field19',title : '份额原始来源'},
+		                  {field : 'field20',title : '默认分红方式'},
+		                  {field : 'field21',title : '可赎回日期'}]
+            };
+            $.table.init(options);
+        });
+		
+	</script>
+</body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+<form id="fileForm" enctype="multipart/form-data" class="mt20 mb10">
+	<div class="col-xs-offset-1">
+		<input type="file" name="files" multiple="multiple"/>
+	</div>
+</form>
+</script>
+</html>

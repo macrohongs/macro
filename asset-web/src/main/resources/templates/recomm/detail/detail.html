@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('智投组合')" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="recommdetail-form">
+					<div class="select-list">
+						<ul>
+							<li>
+								日期：<input type="text" name="tradeDate"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="recomm:detail:export">
+		            <i class="fa fa-download"></i> 导出
+		        </a>
+	        </div>
+	        
+	        <div class="col-sm-12 select-table table-striped table-bordered">
+			    <table id="bootstrap-table"></table>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+		var prefix = ctx + "recomm/detail";
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+		        exportUrl: prefix + "/export",
+		        modalName: "组合产品",
+		        columns: [{
+		            checkbox: true
+		        },
+		        {
+		            field: 'recommId',
+		            title: '组合编号'
+		        },
+		        {
+		            field: 'tradeDate',
+		            title: '日期'
+		        },
+		        {
+		            field: 'detailId',
+		            title: '明细编号'
+		        },
+		        {
+		            field: 'fundCode',
+		            title: '产品编号'
+		        },
+		        {
+		            field: 'fundRate',
+		            title: '产品比例'
+		        }]
+		    };
+		    $.table.init(options);
+		});
+		
+	</script>
+</body>
+</html>

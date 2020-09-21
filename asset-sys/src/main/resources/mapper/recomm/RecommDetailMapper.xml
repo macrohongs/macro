@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.glf.recomm.mapper.RecommDetailMapper">
+	
+	<select id="selectList" parameterType="RecommDetail" resultType="RecommDetail">
+	    select recommId,detailId,tradedate,fundCode,fundRate from
+		    (select substring(detail_id, 9, length(detail_id)) recommId,detail_id detailId,
+		           substring(detail_id, 1, 8) tradedate,
+	               fund_code fundCode,fund_rate fundRate 
+		    from recommon_detail where biz_flag='0'
+			<if test="tradeDate != null and tradeDate != ''">
+				AND detail_id like concat('', #{tradeDate}, '%')
+			</if>) tb
+		 order by tradedate desc,(recommId+0) asc 
+	</select>
+	
+	<select id="queryRecommList" parameterType="String" resultType="RecommDetail">
+		 SELECT detail_id detailId,rd.fund_code fundCode,
+		        redeem_nav fundNav,fund_rate fundRate,
+		        BIZ_FLAG bizFlag 
+		    FROM recommon_detail rd,cmn_fund cf 
+ 		WHERE RD.fund_code=CF.fund_code AND detail_id=#{detailId}
+	</select>
+	
+	<select id="queryRoboStockList" parameterType="RoboStock" resultType="RoboStock">
+		 SELECT recomm_id recommId,rd.fund_code fundCode,
+		       finance_acc financeAcc,
+		       (robo_valid_vol-robo_redeem_vol) roboValidVol,
+		       redeem_nav fundNav,
+		       ROUND((robo_valid_vol-robo_redeem_vol)*redeem_nav,2) marketValue,
+		       robo_purchase_amt roboPurchaseAmt,
+		       robo_redeem_vol roboRedeemVol,
+		       robo_convert_vol roboConvertVol 
+		    FROM acc_robo_stock rd,cmn_fund cf 
+ 		WHERE RD.fund_code=CF.fund_code AND recomm_id=#{recommId}
+	 		AND finance_acc=#{financeAcc}
+	</select>
+
+</mapper> 

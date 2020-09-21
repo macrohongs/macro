@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('净值修改')" />
+	<th:block th:include="include :: bootstrap-editable-css" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+	        <div class="col-sm-12 select-table table-bordered">
+	            <table id="bootstrap-table"></table>
+	        </div>
+	    </div>
+	</div>
+    <th:block th:include="include :: footer" />
+	<th:block th:include="include :: bootstrap-table-editable-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "account/ta";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+   		        showColumns: false,
+   		     	pagination:false,
+		        showExport: false,
+		        onEditableSave: onEditableSave,
+                modalName: "净值修改",
+                columns: [{
+                    field: 'fundId',
+                    title: '产品代码'
+                },
+                {
+                    field: 'nav',
+                    title: '基金净值',
+					editable : {
+						type : 'text',
+						title : '名称'
+					}
+                }]
+            };
+            $.table.init(options);
+        });
+        
+        function onEditableSave (field, row, oldValue, $el) {
+        	alert("字段名："  + field + "-" + row["fundId"] + "，当前值：" + row[field]  + "，旧值：" + oldValue);
+        }
+    </script>
+</body>
+</html>

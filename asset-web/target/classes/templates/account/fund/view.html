@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('行情文件模拟')" />
+	<th:block th:include="include :: layout-latest-css" />
+	<th:block th:include="include :: select2-css" />
+	<th:block th:include="include :: bootstrap-editable-css" />
+</head>
+<body class="gray-bg">
+    <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="account-ta-fund-form">
+			    		<div class="row">
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">IP地址：</label>
+			                        <div class="col-sm-8">
+			                            <input id="ip" name="ip" placeholder="请输入IP地址" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">用户名：</label>
+			                        <div class="col-sm-8">
+			                            <input id="username" name="username" placeholder="请输入用户名" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">密码：</label>
+			                        <div class="col-sm-8">
+			                            <input id="password" name="password" placeholder="请输入密码" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+                   		</div>
+			    		<div class="row">
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">服务名：</label>
+			                        <div class="col-sm-8">
+			                            <input id="sid" name="sid" placeholder="请输入服务名/SID" class="form-control" type="text" >
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">基金公司：</label>
+			                        <div class="col-sm-8">
+			                            <select id="taCode" name="taCode" class="form-control m-b" th:with="type=${@dict.getType('sys_fundcomp')}">
+											<option value="">--请选择--</option>
+											<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+										</select>
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="col-sm-4">
+			                    <div class="form-group">
+			                        <label class="col-sm-4 control-label is-required">净值日：</label>
+			                        <div class="col-sm-8">
+			                        	<div class="input-group">
+		                                     <input id="navDate" name="navDate" placeholder="请输入净值日" class="form-control" type="text" > 
+		                                     <span class="input-group-btn"> 
+			                                     <button type="button"  onclick="submitHandler();" class="btn btn-primary">搜索</button> 
+		                                     </span>
+		                                </div>
+			                            
+			                        </div>
+			                    </div>
+			                </div>
+                   		</div>
+				</form>
+			</div>
+                                
+	        <div class="btn-group-sm" id="toolbar" role="group">
+          		 <div class="input-group">
+                      <input id="navDate" name="navDate" value="/exchange/fundhome/recv/" placeholder="请输入文件保存路径" title="行情文件保存路径" alt="行情文件保存路径" class="form-control" type="text" > 
+                      <span class="input-group-btn"> 
+                       	<button type="button"  onclick="submitHandler();" class="btn btn-primary">生成行情文件</button> 
+                      </span>
+                 </div>
+	        </div>
+	        <div class="col-sm-12 select-table table-bordered">
+			    <table id="bootstrap-table"></table>
+			</div>
+		</div>
+	</div>
+	
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: layout-latest-js" />
+<th:block th:include="include :: select2-js" />
+<th:block th:include="include :: bootstrap-table-editable-js" />
+	<script>
+
+		var prefix = ctx + "account/fund";
+
+		$(function() {
+			var ips = '[[${ip}]]';
+			var sids = '[[${sid}]]';
+			var usernames = '[[${username}]]';
+			var passwords = '[[${password}]]';
+		    $('#ip').val(ips);
+		    $('#sid').val(sids);
+		    $('#username').val(usernames);
+		    $('#password').val(passwords);
+			var navDates = '[[${navDate}]]';
+		    $('#navDate').val(navDates);
+		});
+		
+		function submitHandler() {
+        	var data = $("#account-ta-fund-form").serializeArray();
+        	$.operate.postData(prefix + "/trade", data);
+	    }
+		
+		$(function() {
+            var options = {
+                url: prefix + "/list",
+   		        showSearch: false,
+   		        showRefresh: false,
+   		        showToggle: false,
+		        height: 400,
+   		        showColumns: false,
+		        onEditableSave: onEditableSave,
+   		     	pagination:false,
+		        modalName: "TA文件",
+		        columns: [{field : 'field1',title : '基金名称'},
+		                  {field : 'field2',title : '基金总份数'},
+		                  {field : 'field3',title : '基金代码'},
+		                  {field : 'field4',title : '基金状态', editable : true},
+		                  {field : 'field5',title : '基金单位净值', editable : true},
+		                  {field : 'field6',title : '基金净值日期', editable : true},
+		                  {field : 'field7',title : '净值类型'},
+		                  {field : 'field8',title : '累计基金单位净值'},
+		                  {field : 'field9',title : '基金转换状态', editable : true},
+		                  {field : 'field10',title : '定期定额状态', editable : true},
+		                  {field : 'field11',title : '转托管状态'},
+		                  {field : 'field12',title : '基金规模'},
+		                  {field : 'field13',title : '结算币种'},
+		                  {field : 'field14',title : '公告标志'},
+		                  {field : 'field15',title : '默认分红方式', editable : true},
+		                  {field : 'field16',title : '法人追加认购金额', editable : true},
+		                  {field : 'field17',title : '法人追加认购份数', editable : true},
+		                  {field : 'field18',title : '法人首次认购最低金额', editable : true},
+		                  {field : 'field19',title : '法人首次认购最低份数', editable : true},
+		                  {field : 'field20',title : '托管人代码'},
+		                  {field : 'field21',title : '定时定额申购的金额', editable : true},
+		                  {field : 'field22',title : '定时定额申购日期'},
+		                  {field : 'field23',title : '基金最高赎回份数', editable : true},
+		                  {field : 'field24',title : '基金最低持有份数', editable : true},
+		                  {field : 'field25',title : '基金募集开始日期', editable : true},
+		                  {field : 'field26',title : '基金募集结束日期', editable : true},
+		                  {field : 'field27',title : '基金管理人'},
+		                  {field : 'field28',title : '个人追加认购份数', editable : true},
+		                  {field : 'field29',title : '个人追加认购金额', editable : true},
+		                  {field : 'field30',title : '个人首次认购最低份数', editable : true},
+		                  {field : 'field31',title : '个人首次认购最低金额', editable : true},
+		                  {field : 'field32',title : '注册登记人代码'},
+		                  {field : 'field33',title : '基金发起人'},
+		                  {field : 'field34',title : '交易价格'},
+		                  {field : 'field35',title : '基金面值'},
+		                  {field : 'field36',title : '分红日/发放日'},
+		                  {field : 'field37',title : '权益登记日期'},
+		                  {field : 'field38',title : '除权日'},
+		                  {field : 'field39',title : '个人最高认购份数', editable : true},
+		                  {field : 'field40',title : '个人最高认购金额', editable : true},
+		                  {field : 'field41',title : '法人最高认购份数', editable : true},
+		                  {field : 'field42',title : '法人最高认购金额', editable : true},
+		                  {field : 'field43',title : '个人认购份数单位', editable : true},
+		                  {field : 'field44',title : '个人认购金额单位', editable : true},
+		                  {field : 'field45',title : '法人认购份数单位', editable : true},
+		                  {field : 'field46',title : '法人认购金额单位', editable : true},
+		                  {field : 'field47',title : '个人首次申购最低金额', editable : true},
+		                  {field : 'field48',title : '法人首次申购最低金额', editable : true},
+		                  {field : 'field49',title : '个人追加申购最低金额', editable : true},
+		                  {field : 'field50',title : '法人追加申购最低金额', editable : true},
+		                  {field : 'field51',title : '基金最少赎回份数', editable : true},
+		                  {field : 'field52',title : '最低基金转换份数', editable : true},
+		                  {field : 'field53',title : '个人发行方式'},
+		                  {field : 'field54',title : '机构发行方式'},
+		                  {field : 'field55',title : '认购方式', editable : true},
+		                  {field : 'field56',title : '交易费收取方式'},
+		                  {field : 'field57',title : '下一开放日'},
+		                  {field : 'field58',title : '产品价值线数值'},
+		                  {field : 'field59',title : '累积单位分红'},
+		                  {field : 'field60',title : '货币基金万份收益率', editable : true},
+		                  {field : 'field61',title : '货币基金万份收益正负'},
+		                  {field : 'field62',title : '货币基金七日年收益', editable : true},
+		                  {field : 'field63',title : '货币基金七日年收益正负'},
+		                  {field : 'field64',title : '保本净值'},
+		                  {field : 'field65',title : '货币基金年收益率', editable : true},
+		                  {field : 'field66',title : '货币基金年收益率正负'},
+		                  {field : 'field67',title : '个人最大申购金额', editable : true},
+		                  {field : 'field68',title : '法人最大申购金额', editable : true},
+		                  {field : 'field69',title : '个人当日累计购买最大金额', editable : true},
+		                  {field : 'field70',title : '法人当日累计购买最大金额', editable : true},
+		                  {field : 'field71',title : '个人当日累计赎回最大份额', editable : true},
+		                  {field : 'field72',title : '法人当日累计赎回最大份额', editable : true},
+		                  {field : 'field73',title : '个人最大赎回份额', editable : true},
+		                  {field : 'field74',title : '法人最大赎回份额', editable : true},
+		                  {field : 'field75',title : '基金当日总收益正负'},
+		                  {field : 'field76',title : '基金当日总收益'},
+		                  {field : 'field77',title : '允许违约赎回标志'},
+		                  {field : 'field78',title : '基金类型'},
+		                  {field : 'field79',title : '基金类型名称'},
+		                  {field : 'field80',title : '注册登记人名称'},
+		                  {field : 'field81',title : '基金管理人名称'},
+		                  {field : 'field82',title : '基金公司客服电话'},
+		                  {field : 'field83',title : '基金公司网站网址'}]
+            };
+            $.table.init(options);
+        });
+        
+		function onEditableSave (field, row, oldValue, $el) {
+        	alert("字段名："  + field + "-" + row["field3"] + "，当前值：" + row[field]  + "，旧值：" + oldValue);
+        	var data = $("#account-ta-fund-form").serializeArray();
+        	data.push({"name": "field1", "value": field});
+        	data.push({"name": "field3", "value": row["field3"]});
+        	data.push({"name": field, "value": row[field]});
+        	$.operate.postData(prefix + "/fund_edit", data);
+        }
+    </script>
+</body>
+</html>
